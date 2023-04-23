@@ -66,11 +66,50 @@ function getProfileData() {
     })
 }
 
+function getComments(postId) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve([
+                {
+                    id: 1,
+                    profilePic: "https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-1k97z3.png",
+                    name: 'John Doe',
+                    desc: "awesome!",
+                    subComments: [
+                        {
+                            id: 3,
+                            parentCommentId: 1,
+                            profilePic: "https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-1k97z3.png",
+                            name: 'Tom',
+                            desc: "good job!",
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    profilePic: "https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-1k97z3.png",
+                    name: 'Jack',
+                    desc: "nice!",
+                    subComments: []
+                }
+            ])
+        }, 1000);
+    });
+}
+
+function sendComment() {
+    return new Promise((resolve, reject) => {
+        resolve(ok);
+    })
+}
+
 export {
     register,
     login,
     logout,
     getAllPost,
     getPostByUserId,
-    getProfileData
+    getProfileData,
+    getComments,
+    sendComment
 }

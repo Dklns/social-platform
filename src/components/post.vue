@@ -8,7 +8,7 @@
                         <router-link :to="`/profile/${post.userId}`">
                             <span className='name'>{{ post.name }}</span>
                         </router-link>
-                        <!-- <span className='date'>{moment(post.createdAt).fromNow()}</span> -->
+                        <span className='date'>1 min ago</span>
                     </div>
                 </div>
                 <!-- <i className='iconfont more' onClick={()=> setOpenMenu(!openMenu)}>&#xe719;</i>
@@ -26,7 +26,7 @@
                     {data?.length} Likes -->
                     <i className='iconfont like' :style="{ color: 'red' }">&#xe8c3;</i> 0 Likes
                 </div>
-                <div className="item">
+                <div className="item" @click="() => openComment = !openComment">
                     <i className="iconfont comments">&#xe6ad;</i>
                     12 Comments
                 </div>
@@ -35,16 +35,24 @@
                     Share
                 </div>
             </div>
-            <!-- {openComment &&
-            <Comments postId={post.id} />} -->
+            <Comment v-if="openComment" :postId="post.id" />
         </div>
     </div>
 </template>
 
 <script>
+import Comment from './comment.vue';
 
 export default {
-    props: ['post']
+    props: ['post'],
+    data() {
+        return {
+            openComment: false
+        }
+    },
+    components: {
+        Comment
+    }
 }
 </script>
 
