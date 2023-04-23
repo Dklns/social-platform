@@ -7,8 +7,10 @@
                     <span>{{ currentUser.name }}</span>
                 </div>
                 <div className=" item">
-                    <img :src="Friends" />
-                    <span>Friends</span>
+                    <router-link :to="`/friends/${currentUser.id}`">
+                        <img :src="Friends" />
+                        <span>Friends</span>
+                    </router-link>
                 </div>
                 <div className="item">
                     <img :src="Groups" />
@@ -181,9 +183,17 @@ img {
                     display: flex;
                     align-items: center;
                     gap: 10px;
+                    cursor: pointer;
 
                     span {
                         font-size: 14px;
+                    }
+
+                    a {
+                        color: inherit;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
                     }
                 }
             }

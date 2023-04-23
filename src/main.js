@@ -10,6 +10,7 @@ import Home from './pages/home.vue';
 import Login from './pages/login.vue';
 import Register from './pages/register.vue';
 import Profile from './pages/profile.vue';
+import Friends from './pages/friends.vue';
 
 const routes = [
     {
@@ -23,6 +24,10 @@ const routes = [
             {
                 path: '/profile/:userId',
                 component: Profile
+            },
+            {
+                path: '/friends/:userId',
+                component: Friends
             }
         ]
     },

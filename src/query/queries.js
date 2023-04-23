@@ -12,7 +12,7 @@ function login(inputs) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve({
-                userId: 1,
+                id: 1,
                 username: inputs.username,
                 profilePic: "https://i.328888.xyz/2023/04/12/iXOjD3.jpeg",
                 name: "klns"
