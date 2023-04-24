@@ -4,11 +4,18 @@
             <span :class="{ active: isShowFollowingList }" @click="listToggleHandler">关注</span>
             <span :class="{ active: !isShowFollowingList }" @click="listToggleHandler">粉丝</span>
         </div>
-        <div class="following-search-container">
+        <div v-show="isShowFollowingList" class="following-search-container">
             <div class="following-search">
                 <search-outlined class="icon" />
                 <input type="type" placeholder="搜索我的关注">
             </div>
+        </div>
+        <div class="friends-list">
+            <ul>
+                <li v-for="friend in list" :key="friend.id">
+                    <friend-excerpt :friend="friend" :isShowFollowingList="isShowFollowingList" />
+                </li>
+            </ul>
         </div>
     </div>
 </template>
@@ -16,20 +23,36 @@
 <script>
 import { SearchOutlined } from '@ant-design/icons-vue';
 
+import FriendExcerpt from './excerpt.vue';
+
+import { getFollowing, getFollower } from '../query/queries';
+
 export default {
     name: "friends",
     data() {
         return {
-            isShowFollowingList: true
+            isShowFollowingList: true,
+            list: [],
+            followingList: [],
+            followerList: []
         }
     },
     components: {
-        SearchOutlined
+        SearchOutlined,
+        FriendExcerpt
     },
     methods: {
         listToggleHandler() {
             this.isShowFollowingList = !this.isShowFollowingList;
+            this.list = this.isShowFollowingList ? this.followingList : this.followerList;
         }
+    },
+    mounted() {
+        getFollowing().then(res => {
+            this.followingList = res
+            this.list = res;
+        });
+        getFollower().then(res => this.followerList = res);
     }
 }
 </script>
@@ -87,6 +110,14 @@ export default {
                     border: none;
                     border-radius: 20px;
                 }
+            }
+        }
+
+        .friends-list {
+            ul {
+                list-style: none;
+
+                li {}
             }
         }
     }
