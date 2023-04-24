@@ -103,6 +103,36 @@ function sendComment() {
     })
 }
 
+function getFollowing() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve([
+                { userId: 1, name: "babel", city: "北京", language: "简中", profilePic: "https://s3.bmp.ovh/imgs/2022/09/05/135eddb103874249.jpg" },
+                { userId: 2, name: "JavaScript", city: "成都", language: "简中", profilePic: "https://s3.bmp.ovh/imgs/2022/09/05/fc9f46585ca438f0.jpg" },
+                { userId: 3, name: "CSS", city: "重庆", language: "简中", profilePic: "https://s3.bmp.ovh/imgs/2022/09/05/72131bea9fc90dbe.jpg" },
+                { userId: 4, name: "HTML", city: "上海", language: "简中", profilePic: "https://s3.bmp.ovh/imgs/2022/09/05/812a7a3faf7b2617.png" },
+                { userId: 5, name: "webpack", city: "天津", language: "简中", profilePic: "https://s3.bmp.ovh/imgs/2022/09/05/ca9af8da4b983b44.jpg" },
+                { userId: 6, name: "React", city: "广州", language: "简中", profilePic: "https://s3.bmp.ovh/imgs/2022/09/05/b2717ce556b88194.jpg" },
+            ])
+        }, 500)
+    })
+}
+
+function getFollower() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve([
+                { userId: 1, name: "babel", city: "北京", language: "简中", profilePic: "https://s3.bmp.ovh/imgs/2022/09/05/135eddb103874249.jpg", isFollowing: true },
+                { userId: 2, name: "JavaScript", city: "成都", language: "简中", profilePic: "https://s3.bmp.ovh/imgs/2022/09/05/fc9f46585ca438f0.jpg", isFollowing: false },
+                { userId: 3, name: "CSS", city: "重庆", language: "简中", profilePic: "https://s3.bmp.ovh/imgs/2022/09/05/72131bea9fc90dbe.jpg", isFollowing: false },
+                { userId: 4, name: "HTML", city: "上海", language: "简中", profilePic: "https://s3.bmp.ovh/imgs/2022/09/05/812a7a3faf7b2617.png", isFollowing: true },
+                { userId: 5, name: "webpack", city: "天津", language: "简中", profilePic: "https://s3.bmp.ovh/imgs/2022/09/05/ca9af8da4b983b44.jpg", isFollowing: false },
+                { userId: 6, name: "React", city: "广州", language: "简中", profilePic: "https://s3.bmp.ovh/imgs/2022/09/05/b2717ce556b88194.jpg", isFollowing: false },
+            ])
+        }, 500)
+    })
+}
+
 export {
     register,
     login,
@@ -111,5 +141,7 @@ export {
     getPostByUserId,
     getProfileData,
     getComments,
-    sendComment
+    sendComment,
+    getFollowing,
+    getFollower
 }
