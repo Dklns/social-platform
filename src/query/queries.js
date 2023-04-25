@@ -144,4 +144,4 @@ export {
     sendComment,
     getFollowing,
     getFollower
-}
+}   

@@ -31,13 +31,25 @@ const routes = [
             }
         ]
     },
-    { path: '/login/:username?', component: Login },
+    { name: 'login', path: '/login/:username?', component: Login },
     { path: '/register', component: Register }
 ]
 
 const router = createRouter({
     history: createWebHistory(),
     routes
+})
+
+router.beforeEach((to, from) => {
+    const currentUser = store.state.currentUser;
+    console.log(currentUser);
+
+    // 如果未登录则重定向到登录
+    console.log(to.name);
+    if (currentUser === null && (to.name !== 'login' && to.name !== 'register')) {
+        console.log('test');
+        return { name: 'login' }
+    }
 })
 
 createApp(App).use(router).use(Antd).use(store).mount('#app');
