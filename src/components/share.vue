@@ -4,7 +4,7 @@
             <div className="top">
                 <div className="left">
                     <img :src="currentUser.profilePic" alt="" />
-                    <input type="text" :placeholder="`What's on your mind ${currentUser.name}?`" v-model="desc" />
+                    <input type="text" :placeholder="`${currentUser.name}, 你有什么新鲜事?`" v-model="desc" />
                 </div>
                 <div className="right">
                     <img v-if="imageUrl" className="file" alt="file" :src="imageUrl" />
@@ -17,20 +17,20 @@
                     <label htmlFor="file">
                         <div className="item">
                             <img :src="Image" alt="Image" />
-                            <span>Add Image</span>
+                            <span>添加图片</span>
                         </div>
                     </label>
                     <div className="item">
                         <img :src="Map" alt="Map" />
-                        <span>Add Place</span>
+                        <span>添加位置</span>
                     </div>
                     <div className="item">
                         <img :src="Friend" alt="Friend" />
-                        <span>Tag Friends</span>
+                        <span>@好友</span>
                     </div>
                 </div>
                 <div className="right">
-                    <button @click="shareHandler">Share</button>
+                    <button @click="shareHandler">发表</button>
                 </div>
             </div>
         </div>

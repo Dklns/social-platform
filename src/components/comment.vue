@@ -2,10 +2,11 @@
     <div className="comments">
         <div className="write">
             <img :src="currentUser.profilePic" alt="profilePic" />
-            <input type="text" placeholder='write a comment' v-model="desc" />
-            <button @click="sendCommentHandler">Send</button>
+            <input type="text" placeholder='输入评论内容' v-model="desc" />
+            <button @click="sendCommentHandler">发送</button>
         </div>
-        <p v-if="isLoading">isLoading...</p>
+        <!-- <p v-if="isLoading">isLoading...</p> -->
+        <loadingMark v-if="isLoading" />
         <div v-else className="comment" v-for="comment in comments" :key="comment.id">
             <img :src="comment.profilePic" class="comment-profilePic" alt="" />
             <div className="comment-body">
@@ -49,6 +50,8 @@ import { LikeOutlined } from '@ant-design/icons-vue';
 
 import { mapState } from 'vuex';
 
+import loadingMark from './loadingMark.vue';
+
 export default {
     name: 'comment',
     props: ["postId"],
@@ -60,7 +63,8 @@ export default {
         }
     },
     components: {
-        LikeOutlined
+        LikeOutlined,
+        loadingMark
     },
     computed: {
         ...mapState({

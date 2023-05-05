@@ -1,0 +1,66 @@
+<template>
+    <div class="loadingSeven">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</template>
+
+<script>
+
+export default {
+    name: 'loadingMark'
+
+}
+</script>
+
+<style>
+.loadingSeven {
+    width: 80px;
+    height: 40px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.loadingSeven span {
+    display: inline-block;
+    width: 8px;
+    height: 100%;
+    border-radius: 4px;
+    background: rgb(144, 169, 238);
+    -webkit-animation: loadsaven 1.04s ease infinite;
+}
+
+@-webkit-keyframes loadsaven {
+
+    0%,
+    100% {
+        height: 40px;
+        background: rgb(144, 169, 238);
+    }
+
+    50% {
+        height: 60px;
+        margin-top: -20px;
+        background: lightblue;
+    }
+}
+
+.loadingSeven span:nth-child(2) {
+    -webkit-animation-delay: 0.13s;
+}
+
+.loadingSeven span:nth-child(3) {
+    -webkit-animation-delay: 0.26s;
+}
+
+.loadingSeven span:nth-child(4) {
+    -webkit-animation-delay: 0.39s;
+}
+
+.loadingSeven span:nth-child(5) {
+    -webkit-animation-delay: 0.52s;
+}
+</style>

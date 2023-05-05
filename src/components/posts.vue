@@ -3,9 +3,10 @@
         <p v-if="error">
             {{ error }}
         </p>
-        <p v-else-if="isLoading">
+        <!-- <p v-else-if="isLoading">
             isLoading...........
-        </p>
+        </p> -->
+        <loadingMark v-else-if="isLoading" />
         <Post v-else v-for="post in posts" :post="post" :key="post.id" />
     </div>
 </template>
@@ -14,6 +15,7 @@
 import { getAllPost, getPostByUserId } from '../query/queries';
 
 import Post from './post.vue';
+import loadingMark from './loadingMark.vue'
 
 export default {
     props: ["userId"],
@@ -25,7 +27,8 @@ export default {
         }
     },
     components: {
-        Post
+        Post,
+        loadingMark
     },
     mounted() {
         if (this.userId) {

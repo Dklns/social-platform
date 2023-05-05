@@ -9,65 +9,65 @@
                 <div className=" item">
                     <router-link :to="`/friends/${currentUser.id}`">
                         <img :src="Friends" />
-                        <span>Friends</span>
+                        <span>我的好友</span>
                     </router-link>
                 </div>
                 <div className="item">
                     <img :src="Groups" />
-                    <span>Groups</span>
+                    <span>用户群组</span>
                 </div>
                 <div className="item">
                     <img :src="Market" />
-                    <span>Market</span>
+                    <span>积分商城</span>
                 </div>
                 <div className="item">
                     <img :src="Watch" />
-                    <span>Watch</span>
+                    <span>浏览记录</span>
                 </div>
                 <div className="item">
                     <img :src="Memories" />
-                    <span>Memories</span>
+                    <span>回忆瞬间</span>
                 </div>
 
             </div>
             <hr />
             <div className="menu">
-                <span>Your shortcuts</span>
+                <span>快捷方式</span>
                 <div className="item">
                     <img :src="Events" />
-                    <span>Events</span>
+                    <span>活动</span>
                 </div>
                 <div className="item">
                     <img :src="Gaming" />
-                    <span>Gaming</span>
+                    <span>游戏</span>
                 </div>
                 <div className="item">
                     <img :src="Gallery" />
-                    <span>Gallery</span>
+                    <span>空间</span>
                 </div>
                 <div className="item">
                     <img :src="Video" />
-                    <span>Video</span>
+                    <span>视频</span>
                 </div>
                 <div className="item">
                     <img :src="Message" />
-                    <span>Message</span>
+                    <span>消息</span>
                 </div>
             </div>
             <hr />
             <div className="menu">
-                <span>Others</span>
+                <span>其他</span>
                 <div className="item">
                     <img :src="Fundraiser" />
-                    <span>Fundraiser</span>
+                    <span>众筹</span>
                 </div>
                 <div className="item">
                     <img :src="Tutorials" />
-                    <span>Tutorials</span>
+                    <span>教程</span>
                 </div>
                 <div className="item">
                     <img :src="Courses" />
-                    <span>Courses</span>
+                    <span>课程</span>
                 </div>
             </div>
         </div>

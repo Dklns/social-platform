@@ -10,7 +10,7 @@
             <AppstoreOutlined />
             <div class="search">
                 <SearchOutlined />
-                <input type="text" placeholder='search....' />
+                <input type="text" placeholder='搜索....' />
             </div>
         </div>
         <div class="right">

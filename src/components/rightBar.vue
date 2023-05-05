@@ -2,15 +2,15 @@
     <div className='right-bar'>
         <div className="container">
             <div className="item">
-                <span>Suggestions for you</span>
+                <span>向你推荐</span>
                 <div className="user">
                     <div className="user-info">
                         <img src="https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-1k97z3.png" />
                         <span>Jane Doe</span>
                     </div>
                     <div className="buttons">
-                        <button>follow</button>
-                        <button>dismiss</button>
+                        <button>关注</button>
+                        <button>忽略</button>
                     </div>
                 </div>
                 <div className="user">
@@ -19,52 +19,52 @@
                         <span>Jane Doe</span>
                     </div>
                     <div className="buttons">
-                        <button>follow</button>
-                        <button>dismiss</button>
+                        <button>关注</button>
+                        <button>忽略</button>
                     </div>
                 </div>
             </div>
             <div className="item">
-                <span>Latest Activities</span>
+                <span>最新动态</span>
                 <div className="user">
                     <div className="user-info">
                         <img src="https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-1k97z3.png" />
                         <p>
-                            <span>Jane Doe</span> changed their cover picture
+                            <span>Jane Doe</span> 更新了背景照片
                         </p>
                     </div>
-                    <span>1 min ago</span>
+                    <span>1 分钟前</span>
                 </div>
                 <div className="user">
                     <div className="user-info">
                         <img src="https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-1k97z3.png" />
                         <p>
-                            <span>Jane Doe</span> changed their cover picture
+                            <span>Jane Doe</span> 更新了背景照片
                         </p>
                     </div>
-                    <span>1 min ago</span>
+                    <span>2 分钟前</span>
                 </div>
                 <div className="user">
                     <div className="user-info">
                         <img src="https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-1k97z3.png" />
                         <p>
-                            <span>Jane Doe</span> changed their cover picture
+                            <span>Jane Doe</span> 更新了背景照片
                         </p>
                     </div>
-                    <span>1 min ago</span>
+                    <span>12 分钟前</span>
                 </div>
                 <div className="user">
                     <div className="user-info">
                         <img src="https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-1k97z3.png" />
                         <p>
-                            <span>Jane Doe</span> changed their cover picture
+                            <span>Jane Doe</span> 更新了背景照片
                         </p>
                     </div>
-                    <span>1 min ago</span>
+                    <span>15 分钟前</span>
                 </div>
             </div>
             <div className="item">
-                <span>Online Friends</span>
+                <span>在线好友</span>
                 <div className="user">
                     <div className="user-info">
                         <img src="https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-1k97z3.png" />

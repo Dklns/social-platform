@@ -8,7 +8,7 @@
                         <router-link :to="`/profile/${post.userId}`">
                             <span className='name'>{{ post.name }}</span>
                         </router-link>
-                        <span className='date'>1 min ago</span>
+                        <span className='date'>1 分钟前</span>
                     </div>
                 </div>
                 <!-- <i className='iconfont more' onClick={()=> setOpenMenu(!openMenu)}>&#xe719;</i>
@@ -24,15 +24,15 @@
                     (<i className='iconfont like' style={{color:'red'}} onClick={handleLike}>&#xe8c3;</i>)
                     : (<i className='iconfont like' onClick={handleLike}>&#xeca1;</i>)}
                     {data?.length} Likes -->
-                    <i className='iconfont like' :style="{ color: 'red' }">&#xe8c3;</i> 0 Likes
+                    <i className='iconfont like' :style="{ color: 'red' }">&#xe8c3;</i> 0 点赞
                 </div>
                 <div className="item" @click="() => openComment = !openComment">
                     <i className="iconfont comments">&#xe6ad;</i>
-                    12 Comments
+                    12 评论
                 </div>
                 <div className="item">
                     <i className="iconfont share">&#xe739;</i>
-                    Share
+                    分享
                 </div>
             </div>
             <Comment v-if="openComment" :postId="post.id" />
