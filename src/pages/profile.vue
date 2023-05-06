@@ -1,8 +1,9 @@
 <template>
     <div className='profile'>
-        <div v-if="isLoading">
+        <!-- <div v-if="isLoading">
             <p>isLoading.......</p>
-        </div>
+        </div> -->
+        <loadingMark v-if="isLoading" />
         <div v-else>
             <div className="images">
                 <img :src="data.coverPic" className='cover' />
@@ -29,7 +30,7 @@
                                 <span>{{ data.language }}</span>
                             </div>
                         </div>
-                        <button>Follow</button>
+                        <button>关注</button>
                     </div>
                     <div className="right">
                         <i className="iconfont">&#xe61c;</i>
@@ -54,6 +55,7 @@ import {
     WeiboCircleFilled
 } from '@ant-design/icons-vue';
 
+import loadingMark from '../components/loadingMark.vue';
 import Posts from '../components/posts.vue';
 import { getProfileData } from '../query/queries';
 
@@ -73,7 +75,8 @@ export default {
         WechatFilled,
         FacebookFilled,
         InstagramFilled,
-        WeiboCircleFilled
+        WeiboCircleFilled,
+        loadingMark
     },
     mounted() {
         this.userId = this.$route.params.userId;

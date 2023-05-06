@@ -1,6 +1,6 @@
 <template>
-    <div className='login'>
-        <div className='card'>
+    <div className='login gradient'>
+        <div className='card cradO'>
             <div className='left'>
                 <h1>Hello World.</h1>
                 <p>
@@ -56,11 +56,25 @@ export default {
 
             const res = await login(this.inputs);
 
+            console.log("res " + res);
+
             this.isLoading = false;
 
+            if (res.code === 1) {
+                this.$store.commit('curUserUpdate', res);
+                this.$router.push("/");
+            } else {
+                if (res.code === 401) {
+                    this.err = "用户不存在";
+                }
+                if (res.code === 403) {
+                    this.err = "密码错误";
+                }
+                return;
+            }
+
             // 未作登录失败逻辑
-            this.$store.commit('curUserUpdate', res);
-            this.$router.push("/");
+
         },
         checkInputs() {
             for (let key in this.inputs) {
@@ -82,11 +96,45 @@ export default {
 
 <style lang="scss">
 .login {
-    height: 100vh;
-    background-color: rgb(193, 190, 255);
+    // height: 100vh;
+    // background-color: rgb(193, 190, 255);
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
+    /* 背景渐变色 - 原理2 */
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    /* 背景尺寸 - 原理3 */
+    background-size: 600% 600%;
+    /* 循环动画 - 原理4 */
+    animation: gradientBG 5s ease infinite;
+
+    // .gradient {
+    //     /* 设置容器尺寸 - 原理1 */
+    //     width: 400px;
+    //     height: 400px;
+    //     /* 背景渐变色 - 原理2 */
+    //     background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    //     /* 背景尺寸 - 原理3 */
+    //     background-size: 600% 600%;
+    //     /* 循环动画 - 原理4 */
+    //     animation: gradientBG 5s ease infinite;
+    // }
+
+    /* 动画，控制背景 background-position */
+    @keyframes gradientBG {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
 
     .card {
         width: 50%;
@@ -105,6 +153,8 @@ export default {
             background-size: cover;
             padding: 50px;
             color: white;
+
+
 
             h1 {
                 font-size: 100px;

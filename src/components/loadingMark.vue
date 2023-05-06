@@ -16,7 +16,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .loadingSeven {
     width: 80px;
     height: 40px;

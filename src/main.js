@@ -12,6 +12,8 @@ import Register from './pages/register.vue';
 import Profile from './pages/profile.vue';
 import Friends from './pages/friends.vue';
 
+import shop from './pages/shop.vue'
+
 const routes = [
     {
         path: '/',
@@ -28,11 +30,16 @@ const routes = [
             {
                 path: '/friends/:userId',
                 component: Friends
+            },
+            {
+                path: '/shop',
+                component: shop
             }
         ]
     },
     { name: 'login', path: '/login/:username?', component: Login },
-    { path: '/register', component: Register }
+    { path: '/register', component: Register },
+
 ]
 
 const router = createRouter({

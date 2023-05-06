@@ -17,8 +17,10 @@
                     <span>用户群组</span>
                 </div>
                 <div className="item">
-                    <img :src="Market" />
-                    <span>积分商城</span>
+                    <router-link :to="'/shop'">
+                        <img :src="Market" />
+                        <span>积分商城</span>
+                    </router-link>
                 </div>
                 <div className="item">
                     <img :src="Watch" />

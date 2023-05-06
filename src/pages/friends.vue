@@ -76,6 +76,7 @@ export default {
             span {
                 color: #6e6e6e;
                 padding: 10px;
+                cursor: pointer;
 
                 &.active {
                     color: #fcabc1;
