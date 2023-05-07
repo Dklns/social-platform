@@ -9,7 +9,9 @@ function register(inputs) {
 function login(inputs) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            resolve(axios.post('http://localhost:8080/smp/api/auth/login', { ...inputs }))
+            resolve(axios.post('http://localhost:8080/smp/api/auth/login', { ...inputs }, {
+                withCredentials: true
+            }))
         }, 1000);
     })
 }
@@ -33,7 +35,7 @@ function getAllPost() {
     })
 }
 
-function getPostByUserId() {
+function getPostByUserId(userId) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve([
@@ -44,7 +46,7 @@ function getPostByUserId() {
 }
 
 function getProfileData(userId) {
-    return instance.get('/api/user/get-id');
+    return instance.get(`/api/user/get-id/${userId}`);
 }
 
 function getComments(postId) {
@@ -114,6 +116,12 @@ function getFollower() {
     })
 }
 
+function upload(img) {
+    return instance.post('/api/applet/upload', {
+        img
+    });
+}
+
 export {
     register,
     login,
@@ -124,5 +132,6 @@ export {
     getComments,
     sendComment,
     getFollowing,
-    getFollower
+    getFollower,
+    upload
 }   

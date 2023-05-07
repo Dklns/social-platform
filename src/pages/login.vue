@@ -61,9 +61,6 @@ export default {
             this.isLoading = false;
 
             if (code === 1) {
-                if (data.profilePic === null) {
-                    data.profilePic = "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png";
-                }
                 this.$store.commit('curUserUpdate', data);
                 this.$router.push("/");
             } else {

@@ -6,31 +6,32 @@
         <loadingMark v-if="isLoading" />
         <div v-else>
             <div className="images">
-                <img :src="data.coverPic" className='cover' />
-                <img :src="data.profilePic" className='profilePic' />
+                <img :src="user.coverPic" className='cover' />
+                <img :src="user.profilePic" className='profilePic' />
             </div>
             <div className="profile-container">
                 <div className="profile-user-info">
                     <div className="left">
-                        <QqOutlined />
-                        <WechatFilled />
-                        <FacebookFilled />
-                        <InstagramFilled />
-                        <WeiboCircleFilled />
+                        <QqOutlined class="icon-link" />
+                        <WechatFilled class="icon-link" />
+                        <FacebookFilled class="icon-link" />
+                        <InstagramFilled class="icon-link" />
+                        <WeiboCircleFilled class="icon-link" />
                     </div>
                     <div className="center">
-                        <span>{{ data.name }}</span>
+                        <span>{{ user.nickname }}</span>
                         <div className="info">
                             <div className="item">
                                 <i className="iconfont">&#xe602;</i>
-                                <span>{{ data.city }}</span>
+                                <span>{{ user.city }}</span>
                             </div>
                             <div className="item">
                                 <i className="iconfont">&#xe654;</i>
-                                <span>{{ data.language }}</span>
+                                <span>{{ user.language }}</span>
                             </div>
                         </div>
-                        <button>关注</button>
+                        <button v-if="!isShowUpdateForm">关注</button>
+                        <button v-else @click="() => setOpenUpdate(true)">更新</button>
                     </div>
                     <div className="right">
                         <i className="iconfont">&#xe61c;</i>
@@ -40,8 +41,7 @@
                 <Posts userId={userId} />
             </div>
         </div>
-        <!-- {openUpdate &&
-        <Update setOpenUpdate={setOpenUpdate} user={data} />} -->
+        <update :user="{ ...user }" :setOpenUpdate="setOpenUpdate" v-if="isOpenUpdate" />
     </div>
 </template>
 
@@ -58,15 +58,17 @@ import {
 import loadingMark from '../components/loadingMark.vue';
 import Posts from '../components/posts.vue';
 import { getProfileData } from '../request/request';
+import Update from '../components/update.vue';
 
 export default {
     name: 'profile',
     data() {
         return {
             isLoading: true,
-            data: {},
+            user: {},
             userId: null,
-            err: ""
+            err: "",
+            isOpenUpdate: false
         }
     },
     components: {
@@ -76,13 +78,29 @@ export default {
         FacebookFilled,
         InstagramFilled,
         WeiboCircleFilled,
-        loadingMark
+        loadingMark,
+        Update
+    },
+    computed: {
+        isShowUpdateForm() {
+            return this.userId === this.$store.state.currentUser.userId;
+        }
+    },
+    methods: {
+        setOpenUpdate(value) {
+            this.isOpenUpdate = value;
+        }
     },
     mounted() {
-        this.userId = this.$route.params.userId;
+        this.userId = parseInt(this.$route.params.userId);
         getProfileData(this.userId).then(res => {
             this.isLoading = false;
-            console.log(res);
+            const { code, data } = res.data;
+            if (code === 1) {
+                this.user = data;
+            } else {
+                this.err = "获取数据失败";
+            }
         }, reason => {
             this.err = reason;
         })
@@ -91,7 +109,7 @@ export default {
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../style.scss';
 
 @font-face {
@@ -152,7 +170,7 @@ export default {
             }
 
             .profile-user-info {
-                height: 180px;
+                height: 300px;
                 -webkit-box-shadow: -14px 8px 55px -27px rgba(0, 0, 0, 0.37);
                 -moz-box-shadow: -14px 8px 55px -27px rgba(0, 0, 0, 0.37);
                 box-shadow: -14px 8px 55px -27px rgba(0, 0, 0, 0.37);
@@ -160,6 +178,7 @@ export default {
                 background-color: themed('bg');
                 color: themed('textColor');
                 padding: 50px;
+                padding-top: 150px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -180,6 +199,10 @@ export default {
 
                     @include tablet {
                         flex-wrap: wrap;
+                    }
+
+                    .icon-link {
+                        cursor: pointer;
                     }
                 }
 

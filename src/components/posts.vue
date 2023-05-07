@@ -32,7 +32,7 @@ export default {
     },
     mounted() {
         if (this.userId) {
-            getPostByUserId().then(res => {
+            getPostByUserId(this.userId).then(res => {
                 this.posts = res;
                 this.isLoading = false;
             }, reason => {

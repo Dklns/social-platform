@@ -51,7 +51,6 @@ router.beforeEach((to, from) => {
     const currentUser = store.state.currentUser;
 
     // 如果未登录则重定向到登录
-    console.log(to.name);
     if (currentUser === null && (to.name !== 'login' && to.name !== 'register')) {
         console.log('test');
         return { name: 'login' }
