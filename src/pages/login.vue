@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { login } from '../query/queries';
+import { login } from '../request/request';
 
 export default {
     name: 'login',
@@ -51,30 +51,31 @@ export default {
     methods: {
         async loginHandler() {
             if (this.checkInputs() === "disqualification") return;
-
             this.isLoading = true;
 
             const res = await login(this.inputs);
+            console.log(res);
 
-            console.log("res " + res);
+            const { code, data } = res.data;
 
             this.isLoading = false;
 
-            if (res.code === 1) {
-                this.$store.commit('curUserUpdate', res);
+            if (code === 1) {
+                if (data.profilePic === null) {
+                    data.profilePic = "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png";
+                }
+                this.$store.commit('curUserUpdate', data);
                 this.$router.push("/");
             } else {
-                if (res.code === 401) {
+                // 未作登录失败逻辑
+                if (code === 401) {
                     this.err = "用户不存在";
                 }
-                if (res.code === 403) {
+                if (code === 403) {
                     this.err = "密码错误";
                 }
                 return;
             }
-
-            // 未作登录失败逻辑
-
         },
         checkInputs() {
             for (let key in this.inputs) {

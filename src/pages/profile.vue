@@ -57,7 +57,7 @@ import {
 
 import loadingMark from '../components/loadingMark.vue';
 import Posts from '../components/posts.vue';
-import { getProfileData } from '../query/queries';
+import { getProfileData } from '../request/request';
 
 export default {
     name: 'profile',
@@ -80,10 +80,9 @@ export default {
     },
     mounted() {
         this.userId = this.$route.params.userId;
-        getProfileData().then(res => {
-            console.log(res);
-            this.data = res
+        getProfileData(this.userId).then(res => {
             this.isLoading = false;
+            console.log(res);
         }, reason => {
             this.err = reason;
         })

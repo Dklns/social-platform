@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { getAllPost, getPostByUserId } from '../query/queries';
+import { getAllPost, getPostByUserId } from '../request/request';
 
 import Post from './post.vue';
 import loadingMark from './loadingMark.vue'

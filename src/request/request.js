@@ -1,69 +1,17 @@
-import axios from "axios";
-
-const requestPath = "http://localhost:8080/smp"
+import axios from 'axios';
+import instance from './index';
 
 function register(inputs) {
     // 如果注册成功，data为 success，否则data为失败原因(字符串)
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve('success');
-        }, 1500);
-    });
+    return axios.post('http://localhost:8080/smp/api/auth/register', { ...inputs });
 }
 
 function login(inputs) {
-
-    let code = 0;
-    let userId = "";
-    let username = "";
-    let profilePic = "";
-    let nickname = "";
-
-    axios.post(requestPath + '/api/auth/login', {
-        username: inputs.username,
-        password: inputs.password
-    }).then(function (response) {
-        console.log(response.data);
-        code = response.data.code;
-        if (code === 1) {
-            userId = response.data.data.userId;
-            username = response.data.data.username;
-            profilePic = response.data.data.profilePic;
-            nickname = response.data.data.nickname;
-        } else {
-            return null;
-        }
-    });
-
-
-    console.log(inputs);
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            if (profilePic == "") {
-                alert(1111);
-                profilePic = "https://i.328888.xyz/2023/04/12/iXOjD3.jpeg";
-            }
-            resolve({
-                id: userId,
-                username: username,
-                profilePic: requestPath + profilePic,
-                name: nickname,
-                code: code
-            });
-        }, 1500);
-    });
-
-    // 如果登录成功，data为当前用户对象，否则data为失败原因(字符串)
-    // return new Promise((resolve, reject) => {
-    //     setTimeout(() => {
-    //         resolve({
-    //             id: 1,
-    //             username: inputs.username,
-    //             profilePic: "https://i.328888.xyz/2023/04/12/iXOjD3.jpeg",
-    //             name: "klns"
-    //         });
-    //     }, 1500);
-    // });
+            resolve(axios.post('http://localhost:8080/smp/api/auth/login', { ...inputs }))
+        }, 1000);
+    })
 }
 
 function logout() {
@@ -95,20 +43,8 @@ function getPostByUserId() {
     })
 }
 
-function getProfileData() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(
-                {
-                    coverPic: "https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-x8v7vo.jpg",
-                    profile: "https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-1k97z3.png",
-                    name: "klns",
-                    city: "chengdu",
-                    language: '简中'
-                }
-            )
-        }, 1000);
-    })
+function getProfileData(userId) {
+    return instance.get('/api/user/get-id');
 }
 
 function getComments(postId) {

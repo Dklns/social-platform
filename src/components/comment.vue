@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { getComments, sendComment } from '../query/queries';
+import { getComments, sendComment } from '../request/request';
 import { LikeOutlined } from '@ant-design/icons-vue';
 
 import { mapState } from 'vuex';

@@ -49,7 +49,6 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
     const currentUser = store.state.currentUser;
-    console.log(currentUser);
 
     // 如果未登录则重定向到登录
     console.log(to.name);

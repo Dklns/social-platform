@@ -4,10 +4,10 @@
             <div className="menu">
                 <div className="user">
                     <img :src="currentUser.profilePic" />
-                    <span>{{ currentUser.name }}</span>
+                    <span>{{ currentUser.nickname }}</span>
                 </div>
                 <div className=" item">
-                    <router-link :to="`/friends/${currentUser.id}`">
+                    <router-link :to="`/friends/${currentUser.userId}`">
                         <img :src="Friends" />
                         <span>我的好友</span>
                     </router-link>

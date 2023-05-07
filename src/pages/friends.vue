@@ -25,7 +25,7 @@ import { SearchOutlined } from '@ant-design/icons-vue';
 
 import FriendExcerpt from './excerpt.vue';
 
-import { getFollowing, getFollower } from '../query/queries';
+import { getFollowing, getFollower } from '../request/request';
 
 export default {
     name: "friends",
@@ -117,8 +117,6 @@ export default {
         .friends-list {
             ul {
                 list-style: none;
-
-                li {}
             }
         }
     }

@@ -31,8 +31,7 @@
 </template>
 
 <script>
-import { register } from '../query/queries';
-
+import { register } from '../request/request'
 export default {
     name: 'register',
     data() {
@@ -52,10 +51,12 @@ export default {
             if (this.checkInputs() === "disqualification") return;
             this.isLoading = true;
             const res = await register(this.inputs);
-            if (res === 'success') {
+            const { code } = res.data;
+            if (code === 1) {
                 this.isLoading = false;
                 this.$router.push(`/login/${this.inputs.username}`);
             } else {
+                console.log(res);
                 this.err = res;
             }
         },
