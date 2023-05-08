@@ -4,21 +4,19 @@
             <div className='left'>
                 <h1>Hello World.</h1>
                 <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.Libero cum,
-                    alias totam numquam ipsa exercitationem dignissimos,error nam,
-                    consequatur.
+                    生活封锁了我们，只要我们的心不死，生活便永远不是一汪死水，而我们，依然会绽放最美的姿态。
                 </p>
-                <span>Don't you have an account?</span>
+                <span>新用户注册</span>
                 <router-link to="/register">
-                    <button>Register</button>
+                    <button>注册</button>
                 </router-link>
             </div>
             <div className="right">
-                <h1>Login</h1>
+                <h1>登录</h1>
                 <form>
                     <input type="text" :placeholder="inputPlaceholder" name='username' v-model="inputs.username" />
-                    <input type="password" placeholder="Password" name='password' v-model="inputs.password" />
-                    <a-button type="primary" :loading=isLoading @click.prevent="loginHandler">Login</a-button>
+                    <input type="password" placeholder="密码" name='password' v-model="inputs.password" />
+                    <a-button type="primary" :loading=isLoading @click.prevent="loginHandler">登录</a-button>
                     <p v-if="err" class="err">
                         {{ err }}
                     </p>
@@ -45,7 +43,7 @@ export default {
     },
     computed: {
         inputPlaceholder() {
-            return this.inputs.username ? this.inputs.username : 'Username';
+            return this.inputs.username ? this.inputs.username : '用户名';
         }
     },
     methods: {
