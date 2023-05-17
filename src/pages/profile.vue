@@ -1,8 +1,5 @@
 <template>
     <div className='profile'>
-        <!-- <div v-if="isLoading">
-            <p>isLoading.......</p>
-        </div> -->
         <loadingMark v-if="isLoading" />
         <div v-else>
             <div className="images">
@@ -38,7 +35,7 @@
                         <i className="iconfont">&#xe719;</i>
                     </div>
                 </div>
-                <Posts userId={userId} />
+                <Posts :userId="user.userId" />
             </div>
         </div>
         <update :user="{ ...user }" :setOpenUpdate="setOpenUpdate" v-if="isOpenUpdate" />

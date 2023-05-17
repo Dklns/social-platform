@@ -8,50 +8,90 @@
                         <router-link :to="`/profile/${post.userId}`">
                             <span className='name'>{{ post.name }}</span>
                         </router-link>
-                        <span className='date'>1 分钟前</span>
+                        <span className='date'>
+                            {{ post.date }}
+                        </span>
                     </div>
                 </div>
-                <!-- <i className='iconfont more' onClick={()=> setOpenMenu(!openMenu)}>&#xe719;</i>
-                {openMenu && post.userId === currentUser.id && <button onClick={handleDelete}>delete</button>} -->
+                <a-dropdown placement="bottom" v-if="post.userId === currentUser.userId">
+                    <div class="more">
+                        <EllipsisOutlined />
+                    </div>
+                    <template #overlay>
+                        <a-menu>
+                            <a-menu-item>
+                                <div class="delete">
+                                    删除
+                                </div>
+                            </a-menu-item>
+                        </a-menu>
+                    </template>
+                </a-dropdown>
             </div>
             <div className="content">
-                <p>{{ post.desc }}</p>
+                <p>{{ post.content }}</p>
                 <img :src="post.img" alt="" />
             </div>
             <div className="info">
-                <div className="item">
-                    <!-- {isLoading ? 'isLoading' : (data.includes(currentUser.id)) ?
-                    (<i className='iconfont like' style={{color:'red'}} onClick={handleLike}>&#xe8c3;</i>)
-                    : (<i className='iconfont like' onClick={handleLike}>&#xeca1;</i>)}
-                    {data?.length} Likes -->
-                    <i className='iconfont like' :style="{ color: 'red' }">&#xe8c3;</i> 0 点赞
+                <div className="item" @click="likeHandler">
+                    <heart-outlined v-if="isLike" :style="{ color: 'red' }" />
+                    <heart-outlined v-else />
+                    <span>
+                        {{ likeNum }} 点赞
+                    </span>
                 </div>
                 <div className="item" @click="() => openComment = !openComment">
                     <i className="iconfont comments">&#xe6ad;</i>
-                    12 评论
+                    {{ commentNum }} 评论
                 </div>
                 <div className="item">
                     <i className="iconfont share">&#xe739;</i>
                     分享
                 </div>
             </div>
-            <Comment v-if="openComment" :postId="post.id" />
+            <Comment v-if="openComment" :postId="post.postId" />
         </div>
     </div>
 </template>
 
 <script>
 import Comment from './comment.vue';
+import { EllipsisOutlined, HeartOutlined } from '@ant-design/icons-vue';
+import { like, cancelLike } from '../request/post';
+
+import { mapState } from 'vuex';
 
 export default {
     props: ['post'],
     data() {
         return {
-            openComment: false
+            openComment: false,
+            likeNum: this.post.likeNum || 0,
+            isLike: this.post.isLike,
+            commentNum: this.post.commentNum
+        }
+    },
+    computed: {
+        ...mapState({
+            currentUser: state => state.currentUser
+        })
+    },
+    methods: {
+        likeHandler() {
+            if (this.isLike) {
+                this.likeNum -= 1;
+                like(this.post.postId)
+            } else {
+                this.likeNum += 1;
+                cancelLike(this.post.postId)
+            }
+            this.isLike = !this.isLike;
         }
     },
     components: {
-        Comment
+        Comment,
+        EllipsisOutlined,
+        HeartOutlined,
     }
 }
 </script>
@@ -128,6 +168,13 @@ export default {
                     width: 20px;
                     height: 20px;
                     font-size: 20px;
+                }
+
+                .delete {
+                    height: 30px;
+                    line-height: 30px;
+                    width: 40px;
+                    color: #999;
                 }
 
                 button {

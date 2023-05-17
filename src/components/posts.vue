@@ -3,9 +3,6 @@
         <p v-if="error">
             {{ error }}
         </p>
-        <!-- <p v-else-if="isLoading">
-            isLoading...........
-        </p> -->
         <loadingMark v-else-if="isLoading" />
         <Post v-else v-for="post in posts" :post="post" :key="post.id" />
     </div>
@@ -32,15 +29,17 @@ export default {
     },
     mounted() {
         if (this.userId) {
+            console.log("userId", this.userId);
             getPostByUserId(this.userId).then(res => {
-                this.posts = res;
+                console.log(res);
                 this.isLoading = false;
             }, reason => {
                 this.error = reason;
             })
         } else {
             getAllPost().then(res => {
-                this.posts = res;
+                console.log(res);
+                this.posts = res.data.data
                 this.isLoading = false;
             }, reason => {
                 this.error = reason;

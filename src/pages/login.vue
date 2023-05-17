@@ -54,7 +54,6 @@ export default {
             this.isLoading = true;
 
             const res = await login(this.inputs);
-            console.log(res);
 
             const { code, data } = res.data;
 

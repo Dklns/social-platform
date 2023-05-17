@@ -4,7 +4,7 @@
             <div className="top">
                 <div className="left">
                     <img :src="currentUser.profilePic" alt="" />
-                    <input type="text" :placeholder="`${currentUser.nickname}, 你有什么新鲜事?`" v-model="desc" />
+                    <input type="text" :placeholder="`${currentUser.nickname}, 你有什么新鲜事?`" v-model="content" />
                 </div>
                 <div className="right">
                     <img v-if="imageUrl" className="file" alt="file" :src="imageUrl" />
@@ -53,7 +53,7 @@ export default {
             Friend,
             file: null,
             imageUrl: "",
-            desc: ""
+            content: ""
         }
     },
     computed: {
@@ -67,7 +67,9 @@ export default {
             this.imageUrl = URL.createObjectURL(this.file);
         },
         shareHandler() {
-            console.log("share");
+            if(this.content) {
+
+            }
         }
 
     }

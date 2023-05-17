@@ -25,24 +25,15 @@ function logout() {
 }
 
 function getAllPost() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve([
-                { id: 1, desc: "a chair", img: "https://i.328888.xyz/2023/03/22/YvOPv.jpeg", userId: 2, name: 'llxs', profilePic: "https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-v9ww2p.jpg" },
-                { id: 2, desc: "sun rise", img: "https://i.328888.xyz/2023/03/22/Y96K3.jpeg", userId: 1, name: 'klns', profilePic: "https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-rdkeq7.jpg" }
-            ])
-        }, 1000);
-    })
+    return instance.get("/api/post");
 }
 
 function getPostByUserId(userId) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve([
-                { id: 2, desc: "sun rise", img: "https://i.328888.xyz/2023/03/22/Y96K3.jpeg", userId: 1, name: 'klns', profilePic: "https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-rdkeq7.jpg" }
-            ])
-        }, 1000);
-    })
+    return instance.get("/api/post", {
+        params: {
+            userId
+        }
+    });
 }
 
 function getProfileData(userId) {
