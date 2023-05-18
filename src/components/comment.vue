@@ -15,9 +15,10 @@
                     <span className='date'>
                         {{ comment.createAt }}
                     </span>
-                    <span class="comment-like">
-                        <like-outlined />
-                        7
+                    <span class="comment-like" @click="() => likeHandler(comment.isLike, comment.id)">
+                        <like-outlined v-if="!comment.likeNum" />
+                        <LikeOutlined v-else :style="{ color: `red` }" />
+                        {{ comment.likeNum }}
                     </span>
                     <span class="reply" @click="() => openReplyHandler(`parent`, comment.id)">
                         回复
@@ -38,9 +39,10 @@
                         <span className='sub-date'>
                             {{ subComment.createAt }}
                         </span>
-                        <span class="sub-comment-like">
-                            <like-outlined />
-                            1
+                        <span class="sub-comment-like" @click="() => likeHandler(subComment.isLike, subComment.id)">
+                            <like-outlined v-if="!subComment.likeNum" />
+                            <LikeOutlined v-else :style="{ color: `red` }" />
+                            {{ subComment.likeNum }}
                         </span>
                         <span class="sub-reply" @click="() => openReplyHandler(`sub`, subComment.id)">
                             回复
@@ -58,7 +60,7 @@
 </template>
 
 <script>
-import { getComments, sendComment } from '../request/post';
+import { getComments, sendComment, likeComment, cancelLikeComment } from '../request/post';
 import { LikeOutlined } from '@ant-design/icons-vue';
 
 import { mapState } from 'vuex';
@@ -100,7 +102,6 @@ export default {
             }).then(() => {
                 this.content = "";
                 getComments(this.postId).then(res => {
-                    console.log(res);
                     this.comments = res.data.data
                     this.isLoading = false;
                 });
@@ -121,17 +122,34 @@ export default {
             }
             sendComment({
                 postId: this.postId,
-                comment: this.comContent,
+                content: this.comContent,
                 commentId
             }).then(() => {
                 this.content = "";
                 getComments(this.postId).then(res => {
-                    console.log(res);
                     this.comments = res.data.data
                     this.isLoading = false;
                 });
             });
             this.comContent = "";
+        },
+        likeHandler(isLike, commentId) {
+            if (isLike) {
+                cancelLikeComment(commentId).then(() => {
+                    getComments(this.postId).then(res => {
+                        this.comments = res.data.data
+                        this.isLoading = false;
+                    });
+                })
+            } else {
+                likeComment(commentId).then(() => {
+                    getComments(this.postId).then(res => {
+                        this.comments = res.data.data
+                        this.isLoading = false;
+                    });
+                })
+            }
+
         }
     },
     mounted() {
@@ -189,6 +207,10 @@ export default {
             flex-direction: column;
             gap: 20px;
             position: relative;
+
+            [class*=like] {
+                cursor: pointer;
+            }
 
             .comment-profilePic {
                 position: absolute;

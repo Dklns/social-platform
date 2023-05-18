@@ -41,6 +41,7 @@
 import Image from "../assets/img.png";
 import Map from "../assets/map.png";
 import Friend from "../assets/friend.png";
+import { upload } from '../request/request';
 
 import { mapState } from 'vuex';
 
@@ -64,11 +65,16 @@ export default {
     methods: {
         changeHandler(e) {
             this.file = e.target.files[0];
-            this.imageUrl = URL.createObjectURL(this.file);
+
+            const formData = new FormData();
+            formData.append('img', this.file);
+            upload(formData).then(res => {
+                this.imageUrl = res.data.data.url;
+            })
         },
         shareHandler() {
-            if(this.content) {
-
+            if (this.content) {
+                
             }
         }
 

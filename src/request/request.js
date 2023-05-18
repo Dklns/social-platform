@@ -1,12 +1,12 @@
 import axios from 'axios';
 import instance from './index';
 
-function register(inputs) {
+export function register(inputs) {
     // 如果注册成功，data为 success，否则data为失败原因(字符串)
     return axios.post('http://localhost:8080/smp/api/auth/register', { ...inputs });
 }
 
-function login(inputs) {
+export function login(inputs) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(axios.post('http://localhost:8080/smp/api/auth/login', { ...inputs }, {
@@ -21,18 +21,6 @@ function logout() {
         setTimeout(() => {
             resolve("success");
         });
-    });
-}
-
-function getAllPost() {
-    return instance.get("/api/post");
-}
-
-function getPostByUserId(userId) {
-    return instance.get("/api/post", {
-        params: {
-            userId
-        }
     });
 }
 
@@ -107,22 +95,15 @@ function getFollower() {
     })
 }
 
-function upload(img) {
-    return instance.post('/api/applet/upload', {
-        img
-    });
+export function upload(formData) {  
+    return instance.post('/api/applet/upload', formData);
 }
 
 export {
-    register,
-    login,
     logout,
-    getAllPost,
-    getPostByUserId,
     getProfileData,
     getComments,
     sendComment,
     getFollowing,
     getFollower,
-    upload
 }   

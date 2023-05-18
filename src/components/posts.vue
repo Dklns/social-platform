@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { getAllPost, getPostByUserId } from '../request/request';
+import { getAllPost, getPostByUserId } from '../request/post';
 
 import Post from './post.vue';
 import loadingMark from './loadingMark.vue'
