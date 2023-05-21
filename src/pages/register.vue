@@ -4,23 +4,21 @@
             <div class='left'>
                 <h1>Hello World.</h1>
                 <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.Libero cum,
-                    alias totam numquam ipsa exercitationem dignissimos,error nam,
-                    consequatur.
+                    生活封锁了我们，只要我们的心不死，生活便永远不是一汪死水，而我们，依然会绽放最美的姿态。
                 </p>
-                <span>Do you have an account?</span>
+                <span>还没有账号？</span>
                 <router-link to='/login'>
-                    <button>Login</button>
+                    <button>登录</button>
                 </router-link>
             </div>
             <div class="right">
-                <h1>Register</h1>
+                <h1>注册</h1>
                 <form>
-                    <input type="text" placeholder='Username' name='username' v-model="inputs.username" />
-                    <input type="email" placeholder='Email' name='email' v-model="inputs.email" />
-                    <input type="password" placeholder="Password" name='password' v-model="inputs.password" />
-                    <input type="text" placeholder='Name' name='nickname' v-model="inputs.nickname" />
-                    <a-button type="primary" :loading="isLoading" @click="registerHandler">Register</a-button>
+                    <input type="text" placeholder='用户名' name='username' v-model="inputs.username" />
+                    <input type="email" placeholder='电子邮箱' name='email' v-model="inputs.email" />
+                    <input type="password" placeholder="密码" name='password' v-model="inputs.password" />
+                    <input type="text" placeholder='昵称' name='nickname' v-model="inputs.nickname" />
+                    <a-button type="primary" :loading="isLoading" @click="registerHandler">注册</a-button>
                     <p v-if="err" class="err">
                         {{ err }}
                     </p>
@@ -31,8 +29,7 @@
 </template>
 
 <script>
-import { register } from '../query/queries';
-
+import { register } from '../request/request'
 export default {
     name: 'register',
     data() {
@@ -52,10 +49,12 @@ export default {
             if (this.checkInputs() === "disqualification") return;
             this.isLoading = true;
             const res = await register(this.inputs);
-            if (res === 'success') {
+            const { code } = res.data;
+            if (code === 1) {
                 this.isLoading = false;
                 this.$router.push(`/login/${this.inputs.username}`);
             } else {
+                console.log(res);
                 this.err = res;
             }
         },
@@ -85,11 +84,32 @@ export default {
 
 <style lang="scss">
 .register {
-    height: 100vh;
-    background-color: rgb(193, 190, 255);
+    // height: 100vh;
+    // background-color: rgb(193, 190, 255);
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
+    /* 背景渐变色 - 原理2 */
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    /* 背景尺寸 - 原理3 */
+    background-size: 600% 600%;
+    /* 循环动画 - 原理4 */
+    animation: gradientBG 5s ease infinite;
+
+    @keyframes gradientBG {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
 
     .card {
         display: flex;

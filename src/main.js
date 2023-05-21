@@ -12,6 +12,8 @@ import Register from './pages/register.vue';
 import Profile from './pages/profile.vue';
 import Friends from './pages/friends.vue';
 
+import shop from './pages/shop.vue'
+
 const routes = [
     {
         path: '/',
@@ -28,11 +30,16 @@ const routes = [
             {
                 path: '/friends/:userId',
                 component: Friends
+            },
+            {
+                path: '/shop',
+                component: shop
             }
         ]
     },
     { name: 'login', path: '/login/:username?', component: Login },
-    { path: '/register', component: Register }
+    { path: '/register', component: Register },
+
 ]
 
 const router = createRouter({
@@ -42,10 +49,8 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
     const currentUser = store.state.currentUser;
-    console.log(currentUser);
 
     // 如果未登录则重定向到登录
-    console.log(to.name);
     if (currentUser === null && (to.name !== 'login' && to.name !== 'register')) {
         console.log('test');
         return { name: 'login' }

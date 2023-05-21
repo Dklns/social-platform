@@ -10,17 +10,43 @@
             <AppstoreOutlined />
             <div class="search">
                 <SearchOutlined />
-                <input type="text" placeholder='search....' />
+                <input type="text" placeholder='搜索....' />
             </div>
         </div>
         <div class="right">
-            <UserOutlined @Click="() => $router.push(`/profile/${currentUser.userId}`)" />
-            <MailOutlined />
-            <BellOutlined />
-            <div class="user">
-                <img :src="currentUser.profilePic" />
-                <span>{{ currentUser.name }}</span>
-            </div>
+            <a-dropdown>
+                <div class="user">
+                    <img :src="currentUser.profilePic" />
+                    <span>{{ currentUser.nickname }}</span>
+                </div>
+                <template #overlay>
+                    <a-menu>
+                        <a-menu-item @Click="gotoProfileHandler">
+                            <a>
+                                <UserOutlined />
+                                个人中心
+                            </a>
+                        </a-menu-item>
+                        <a-menu-item>
+                            <a href="javascript:;">
+                                <BellOutlined />
+                                聊天记录
+                            </a>
+                        </a-menu-item>
+                        <a-menu-item>
+                            <a href="javascript:;">
+                                <MailOutlined />
+                                消息通知
+                            </a>
+                        </a-menu-item>
+                        <a-menu-item>
+                            <a href="javascript:;">
+                                <export-outlined />&nbsp;账号登出
+                            </a>
+                        </a-menu-item>
+                    </a-menu>
+                </template>
+            </a-dropdown>
         </div>
     </div>
 </template>
@@ -34,7 +60,8 @@ import {
     SearchOutlined,
     UserOutlined,
     MailOutlined,
-    BellOutlined
+    BellOutlined,
+    ExportOutlined
 } from '@ant-design/icons-vue';
 
 import { mapState } from 'vuex';
@@ -59,11 +86,15 @@ export default {
         SearchOutlined,
         UserOutlined,
         MailOutlined,
-        BellOutlined
+        BellOutlined,
+        ExportOutlined
     },
     methods: {
         toggle() {
             this.$store.commit('darkModeUpdate');
+        },
+        gotoProfileHandler() {
+            this.$router.push(`/profile/${this.currentUser.userId}`);
         }
     }
 }
@@ -128,6 +159,7 @@ export default {
             display: flex;
             align-items: center;
             gap: 20px;
+            margin-right: 50px;
 
             @include mobile {
                 display: none;

@@ -2,41 +2,57 @@
     <div className="comments">
         <div className="write">
             <img :src="currentUser.profilePic" alt="profilePic" />
-            <input type="text" placeholder='write a comment' v-model="desc" />
-            <button @click="sendCommentHandler">Send</button>
+            <input type="text" placeholder='输入评论内容' v-model="content" />
+            <button @click.prevent="sendCommentHandler" :disabled="!content">发送</button>
         </div>
-        <p v-if="isLoading">isLoading...</p>
+        <loadingMark v-if="isLoading" />
         <div v-else className="comment" v-for="comment in comments" :key="comment.id">
             <img :src="comment.profilePic" class="comment-profilePic" alt="" />
             <div className="comment-body">
                 <span class="comment-name">{{ comment.name }}</span>
-                <p class="comment-desc">{{ comment.desc }}</p>
+                <p class="comment-desc">{{ comment.content }}</p>
                 <div class="comment-info">
-                    <span className='date'>2023-04-22 13:19</span>
-                    <span class="comment-like">
-                        <like-outlined />
-                        7
+                    <span className='date'>
+                        {{ comment.createAt }}
                     </span>
-                    <span class="reply">
+                    <span class="comment-like" @click="() => likeHandler(comment.isLike, comment.id)">
+                        <like-outlined v-if="!comment.likeNum" />
+                        <LikeOutlined v-else :style="{ color: `red` }" />
+                        {{ comment.likeNum }}
+                    </span>
+                    <span class="reply" @click="() => openReplyHandler(`parent`, comment.id)">
                         回复
                     </span>
                 </div>
             </div>
-            <div v-for="subComment in comment.subComments" class="sub-comment" :key="subComment.id">
+            <div className="write" v-if="openReply && selectedComment === comment.id">
+                <img :src="currentUser.profilePic" alt="profilePic" />
+                <input type="text" placeholder='输入评论内容' v-model="comContent" />
+                <button @click.prevent="() => replyComment(comment.id)" :disabled="!comContent">发送</button>
+            </div>
+            <div v-for="subComment in comment.subComment" class="sub-comment" :key="subComment.id">
                 <img :src="subComment.profilePic" class="sub-comment-profilePic" alt="" />
                 <div className="sub-comment-body">
                     <span class="sub-comment-name">{{ subComment.name }}</span>
-                    <p class="sub-comment-desc">{{ subComment.desc }}</p>
+                    <p class="sub-comment-desc">{{ subComment.content }}</p>
                     <div class="sub-comment-info">
-                        <span className='sub-date'>2023-04-22 13:19</span>
-                        <span class="sub-comment-like">
-                            <like-outlined />
-                            1
+                        <span className='sub-date'>
+                            {{ subComment.createAt }}
                         </span>
-                        <span class="sub-reply">
+                        <span class="sub-comment-like" @click="() => likeHandler(subComment.isLike, subComment.id)">
+                            <like-outlined v-if="!subComment.likeNum" />
+                            <LikeOutlined v-else :style="{ color: `red` }" />
+                            {{ subComment.likeNum }}
+                        </span>
+                        <span class="sub-reply" @click="() => openReplyHandler(`sub`, subComment.id)">
                             回复
                         </span>
                     </div>
+                </div>
+                <div className="write" v-if="openSubReply && selectedComment === subComment.id">
+                    <img :src="currentUser.profilePic" alt="profilePic" />
+                    <input type="text" placeholder='输入评论内容' v-model="comContent" />
+                    <button @click.prevent="() => replyComment(subComment.id)" :disabled="!comContent">发送</button>
                 </div>
             </div>
         </div>
@@ -44,23 +60,32 @@
 </template>
 
 <script>
-import { getComments, sendComment } from '../query/queries';
+import { getComments, sendComment, likeComment, cancelLikeComment } from '../request/post';
 import { LikeOutlined } from '@ant-design/icons-vue';
 
 import { mapState } from 'vuex';
+
+import loadingMark from './loadingMark.vue';
 
 export default {
     name: 'comment',
     props: ["postId"],
     data() {
         return {
-            desc: "",
+            content: "",
+            comContent: "",
             comments: [],
             isLoading: true,
+            selectedComment: -1,
+            openReply: false,
+            openSubReply: false,
+            selectedComment: -1,
+            selectedSubComment: -1
         }
     },
     components: {
-        LikeOutlined
+        LikeOutlined,
+        loadingMark
     },
     computed: {
         ...mapState({
@@ -68,17 +93,69 @@ export default {
         })
     },
     methods: {
-        sendCommentHandler() {
+        sendCommentHandler(e) {
+            e.preventDefault();
+
             sendComment({
-                userId: this.currentUser.id,
                 postId: this.postId,
-                desc: this.desc
-            })
+                content: this.content
+            }).then(() => {
+                this.content = "";
+                getComments(this.postId).then(res => {
+                    this.comments = res.data.data
+                    this.isLoading = false;
+                });
+            });
+
+        },
+        openReplyHandler(type, commentId) {
+            this.selectedComment = commentId
+            if (type === 'parent') {
+                this.openReply = !this.openReply;
+            } else {
+                this.openSubReply = !this.openSubReply;
+            }
+        },
+        replyComment(commentId) {
+            if (!this.comContent) {
+                return
+            }
+            sendComment({
+                postId: this.postId,
+                content: this.comContent,
+                commentId
+            }).then(() => {
+                this.content = "";
+                getComments(this.postId).then(res => {
+                    this.comments = res.data.data
+                    this.isLoading = false;
+                });
+            });
+            this.comContent = "";
+        },
+        likeHandler(isLike, commentId) {
+            if (isLike) {
+                cancelLikeComment(commentId).then(() => {
+                    getComments(this.postId).then(res => {
+                        this.comments = res.data.data
+                        this.isLoading = false;
+                    });
+                })
+            } else {
+                likeComment(commentId).then(() => {
+                    getComments(this.postId).then(res => {
+                        this.comments = res.data.data
+                        this.isLoading = false;
+                    });
+                })
+            }
+
         }
     },
     mounted() {
         getComments(this.postId).then(res => {
-            this.comments = res;
+            console.log(res);
+            this.comments = res.data.data
             this.isLoading = false;
         });
     }
@@ -131,6 +208,10 @@ export default {
             gap: 20px;
             position: relative;
 
+            [class*=like] {
+                cursor: pointer;
+            }
+
             .comment-profilePic {
                 position: absolute;
                 top: 0;
@@ -178,6 +259,7 @@ export default {
 
                     .reply {
                         line-height: 20px;
+                        cursor: pointer;
                     }
                 }
             }
@@ -237,6 +319,7 @@ export default {
 
                         .sub-reply {
                             line-height: 20px;
+                            cursor: pointer;
                         }
                     }
                 }

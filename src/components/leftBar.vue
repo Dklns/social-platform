@@ -4,72 +4,34 @@
             <div className="menu">
                 <div className="user">
                     <img :src="currentUser.profilePic" />
-                    <span>{{ currentUser.name }}</span>
+                    <span>{{ currentUser.nickname }}</span>
                 </div>
                 <div className=" item">
-                    <router-link :to="`/friends/${currentUser.id}`">
+                    <router-link :to="`/friends/${currentUser.userId}`">
                         <img :src="Friends" />
-                        <span>Friends</span>
+                        <span>我的好友</span>
                     </router-link>
                 </div>
                 <div className="item">
                     <img :src="Groups" />
-                    <span>Groups</span>
+                    <span>用户群组</span>
                 </div>
                 <div className="item">
-                    <img :src="Market" />
-                    <span>Market</span>
+                    <router-link :to="'/shop'">
+                        <img :src="Market" />
+                        <span>积分商城</span>
+                    </router-link>
                 </div>
                 <div className="item">
                     <img :src="Watch" />
-                    <span>Watch</span>
+                    <span>浏览记录</span>
                 </div>
                 <div className="item">
                     <img :src="Memories" />
-                    <span>Memories</span>
-                </div>
-
-            </div>
-            <hr />
-            <div className="menu">
-                <span>Your shortcuts</span>
-                <div className="item">
-                    <img :src="Events" />
-                    <span>Events</span>
-                </div>
-                <div className="item">
-                    <img :src="Gaming" />
-                    <span>Gaming</span>
-                </div>
-                <div className="item">
-                    <img :src="Gallery" />
-                    <span>Gallery</span>
-                </div>
-                <div className="item">
-                    <img :src="Video" />
-                    <span>Video</span>
-                </div>
-                <div className="item">
-                    <img :src="Message" />
-                    <span>Message</span>
+                    <span>回忆瞬间</span>
                 </div>
             </div>
             <hr />
-            <div className="menu">
-                <span>Others</span>
-                <div className="item">
-                    <img :src="Fundraiser" />
-                    <span>Fundraiser</span>
-                </div>
-                <div className="item">
-                    <img :src="Tutorials" />
-                    <span>Tutorials</span>
-                </div>
-                <div className="item">
-                    <img :src="Courses" />
-                    <span>Courses</span>
-                </div>
-            </div>
         </div>
     </div>
 </template>

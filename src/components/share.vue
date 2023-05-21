@@ -4,7 +4,7 @@
             <div className="top">
                 <div className="left">
                     <img :src="currentUser.profilePic" alt="" />
-                    <input type="text" :placeholder="`What's on your mind ${currentUser.name}?`" v-model="desc" />
+                    <input type="text" :placeholder="`${currentUser.nickname}, 你有什么新鲜事?`" v-model="content" />
                 </div>
                 <div className="right">
                     <img v-if="imageUrl" className="file" alt="file" :src="imageUrl" />
@@ -17,20 +17,22 @@
                     <label htmlFor="file">
                         <div className="item">
                             <img :src="Image" alt="Image" />
-                            <span>Add Image</span>
+                            <span>添加图片</span>
                         </div>
                     </label>
                     <div className="item">
                         <img :src="Map" alt="Map" />
-                        <span>Add Place</span>
+                        <span>添加位置</span>
                     </div>
                     <div className="item">
                         <img :src="Friend" alt="Friend" />
-                        <span>Tag Friends</span>
+                        <span>@好友</span>
                     </div>
                 </div>
                 <div className="right">
-                    <button @click="shareHandler">Share</button>
+                    <a-button type="primary" @click="shareHandler" :disabled="!content">
+                        发表
+                    </a-button>
                 </div>
             </div>
         </div>
@@ -41,6 +43,8 @@
 import Image from "../assets/img.png";
 import Map from "../assets/map.png";
 import Friend from "../assets/friend.png";
+import { upload } from '../request/request';
+import { share, getAllPost } from "../request/post";
 
 import { mapState } from 'vuex';
 
@@ -51,9 +55,9 @@ export default {
             Image,
             Map,
             Friend,
-            file: null,
+            file: "",
             imageUrl: "",
-            desc: ""
+            content: ""
         }
     },
     computed: {
@@ -66,10 +70,23 @@ export default {
             this.file = e.target.files[0];
             this.imageUrl = URL.createObjectURL(this.file);
         },
-        shareHandler() {
-            console.log("share");
+        async shareHandler() {
+            const formData = new FormData();
+            formData.append('desc', this.content);
+            let res;
+            if (this.file) {
+                formData.append('img', this.file);
+                res = await upload(formData);
+                this.imageUrl = res.data.data.url;
+            }
+            formData.set('img', this.imageUrl);
+            console.log(this.imageUrl);
+            await share(formData);
+            res = await getAllPost();
+            this.$store.commit("setHomePosts", res.data.data);
+            this.content = "";
+            this.imageUrl = "";
         }
-
     }
 }
 </script>

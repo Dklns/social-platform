@@ -1,24 +1,18 @@
-function register(inputs) {
-    // 如果注册成功，data为 success，否则data为失败原因(字符串)
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve('success');
-        }, 1500);
-    });
+import axios from 'axios';
+import instance from './index';
+
+export function register(inputs) {
+    return axios.post('http://localhost:8080/smp/api/auth/register', { ...inputs });
 }
 
-function login(inputs) {
-    // 如果登录成功，data为当前用户对象，否则data为失败原因(字符串)
+export function login(inputs) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            resolve({
-                id: 1,
-                username: inputs.username,
-                profilePic: "https://i.328888.xyz/2023/04/12/iXOjD3.jpeg",
-                name: "klns"
-            });
-        }, 1500);
-    });
+            resolve(axios.post('http://localhost:8080/smp/api/auth/login', { ...inputs }, {
+                withCredentials: true
+            }))
+        }, 1000);
+    })
 }
 
 function logout() {
@@ -27,43 +21,6 @@ function logout() {
             resolve("success");
         });
     });
-}
-
-function getAllPost() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve([
-                { id: 1, desc: "a chair", img: "https://i.328888.xyz/2023/03/22/YvOPv.jpeg", userId: 2, name: 'llxs', profilePic: "https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-v9ww2p.jpg" },
-                { id: 2, desc: "sun rise", img: "https://i.328888.xyz/2023/03/22/Y96K3.jpeg", userId: 1, name: 'klns', profilePic: "https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-rdkeq7.jpg" }
-            ])
-        }, 1000);
-    })
-}
-
-function getPostByUserId() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve([
-                { id: 2, desc: "sun rise", img: "https://i.328888.xyz/2023/03/22/Y96K3.jpeg", userId: 1, name: 'klns', profilePic: "https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-rdkeq7.jpg" }
-            ])
-        }, 1000);
-    })
-}
-
-function getProfileData() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(
-                {
-                    coverPic: "https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-x8v7vo.jpg",
-                    profile: "https://cdn.jsdelivr.net/gh/Dklns/ImgHosting/Blog-PIC/wallhaven-1k97z3.png",
-                    name: "klns",
-                    city: "chengdu",
-                    language: '简中'
-                }
-            )
-        }, 1000);
-    })
 }
 
 function getComments(postId) {
@@ -133,15 +90,14 @@ function getFollower() {
     })
 }
 
+export function upload(formData) {
+    return instance.post('/api/applet/upload', formData);
+}
+
 export {
-    register,
-    login,
     logout,
-    getAllPost,
-    getPostByUserId,
-    getProfileData,
     getComments,
     sendComment,
     getFollowing,
-    getFollower
+    getFollower,
 }   

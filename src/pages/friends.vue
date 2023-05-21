@@ -10,9 +10,16 @@
                 <input type="type" placeholder="搜索我的关注">
             </div>
         </div>
-        <div class="friends-list">
+        <div class="friends-list" v-if="isShowFollowingList">
             <ul>
-                <li v-for="friend in list" :key="friend.id">
+                <li v-for="friend in followingList" :key="friend.id">
+                    <friend-excerpt :friend="friend" :isShowFollowingList="isShowFollowingList" />
+                </li>
+            </ul>
+        </div>
+        <div class="friends-list" v-else>
+            <ul>
+                <li v-for="friend in followerList" :key="friend.id">
                     <friend-excerpt :friend="friend" :isShowFollowingList="isShowFollowingList" />
                 </li>
             </ul>
@@ -25,7 +32,7 @@ import { SearchOutlined } from '@ant-design/icons-vue';
 
 import FriendExcerpt from './excerpt.vue';
 
-import { getFollowing, getFollower } from '../query/queries';
+import { getFollowedUsers } from '../request/friend';
 
 export default {
     name: "friends",
@@ -48,11 +55,14 @@ export default {
         }
     },
     mounted() {
-        getFollowing().then(res => {
-            this.followingList = res
-            this.list = res;
-        });
-        getFollower().then(res => this.followerList = res);
+        getFollowedUsers()
+            .then(res => {
+                this.followingList = res.data.data;
+                return getFollowedUsers();
+            })
+            .then(res => {
+                this.followerList = res.data.data;
+            })
     }
 }
 </script>
@@ -76,6 +86,7 @@ export default {
             span {
                 color: #6e6e6e;
                 padding: 10px;
+                cursor: pointer;
 
                 &.active {
                     color: #fcabc1;
@@ -116,8 +127,6 @@ export default {
         .friends-list {
             ul {
                 list-style: none;
-
-                li {}
             }
         }
     }

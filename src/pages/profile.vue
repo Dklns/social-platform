@@ -1,46 +1,46 @@
 <template>
     <div className='profile'>
-        <div v-if="isLoading">
-            <p>isLoading.......</p>
-        </div>
+        <loadingMark v-if="isLoading" />
         <div v-else>
             <div className="images">
-                <img :src="data.coverPic" className='cover' />
-                <img :src="data.profilePic" className='profilePic' />
+                <img :src="user.coverPic" className='cover' />
+                <img :src="user.profilePic" className='profilePic' />
             </div>
             <div className="profile-container">
                 <div className="profile-user-info">
                     <div className="left">
-                        <QqOutlined />
-                        <WechatFilled />
-                        <FacebookFilled />
-                        <InstagramFilled />
-                        <WeiboCircleFilled />
+                        <QqOutlined class="icon-link" />
+                        <WechatFilled class="icon-link" />
+                        <FacebookFilled class="icon-link" />
+                        <InstagramFilled class="icon-link" />
+                        <WeiboCircleFilled class="icon-link" />
                     </div>
                     <div className="center">
-                        <span>{{ data.name }}</span>
+                        <span>{{ user.nickname }}</span>
                         <div className="info">
                             <div className="item">
                                 <i className="iconfont">&#xe602;</i>
-                                <span>{{ data.city }}</span>
+                                <span>{{ user.userLocation }}</span>
                             </div>
                             <div className="item">
                                 <i className="iconfont">&#xe654;</i>
-                                <span>{{ data.language }}</span>
+                                <span>{{ user.userLang }}</span>
                             </div>
                         </div>
-                        <button>Follow</button>
+                        <button v-if="!isShowUpdateForm">关注</button>
+                        <button v-else @click="() => setOpenUpdate(true)">更新</button>
                     </div>
                     <div className="right">
                         <i className="iconfont">&#xe61c;</i>
                         <i className="iconfont">&#xe719;</i>
                     </div>
                 </div>
-                <Posts userId={userId} />
+                <Posts :userId="user.userId" />
             </div>
         </div>
-        <!-- {openUpdate &&
-        <Update setOpenUpdate={setOpenUpdate} user={data} />} -->
+        <a-modal v-model:visible="isOpenUpdate" :style="{ width: `800px` }" :footer="null">
+            <update :user="{ ...user }" :setOpenUpdate="setOpenUpdate" :updateUser="updateUser" />
+        </a-modal>
     </div>
 </template>
 
@@ -54,17 +54,22 @@ import {
     WeiboCircleFilled
 } from '@ant-design/icons-vue';
 
+import loadingMark from '../components/loadingMark.vue';
 import Posts from '../components/posts.vue';
-import { getProfileData } from '../query/queries';
+import { getProfileData } from '../request/profile';
+import Update from '../components/update.vue';
+
+import { mapState } from 'vuex';
 
 export default {
     name: 'profile',
     data() {
         return {
             isLoading: true,
-            data: {},
+            user: {},
             userId: null,
-            err: ""
+            err: "",
+            isOpenUpdate: false
         }
     },
     components: {
@@ -73,14 +78,33 @@ export default {
         WechatFilled,
         FacebookFilled,
         InstagramFilled,
-        WeiboCircleFilled
+        WeiboCircleFilled,
+        loadingMark,
+        Update
+    },
+    computed: {
+        isShowUpdateForm() {
+            return this.userId === this.$store.state.currentUser.userId;
+        },
+    },
+    methods: {
+        setOpenUpdate(value) {
+            this.isOpenUpdate = value;
+        },
+        updateUser(user) {
+            this.user = user;
+        }
     },
     mounted() {
-        this.userId = this.$route.params.userId;
-        getProfileData().then(res => {
-            console.log(res);
-            this.data = res
+        this.userId = parseInt(this.$route.params.userId);
+        getProfileData(this.userId).then(res => {
             this.isLoading = false;
+            const { code, data } = res.data;
+            if (code === 1) {
+                this.user = data;
+            } else {
+                this.err = "获取数据失败";
+            }
         }, reason => {
             this.err = reason;
         })
@@ -89,7 +113,7 @@ export default {
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../style.scss';
 
 @font-face {
@@ -150,7 +174,7 @@ export default {
             }
 
             .profile-user-info {
-                height: 180px;
+                height: 300px;
                 -webkit-box-shadow: -14px 8px 55px -27px rgba(0, 0, 0, 0.37);
                 -moz-box-shadow: -14px 8px 55px -27px rgba(0, 0, 0, 0.37);
                 box-shadow: -14px 8px 55px -27px rgba(0, 0, 0, 0.37);
@@ -158,6 +182,7 @@ export default {
                 background-color: themed('bg');
                 color: themed('textColor');
                 padding: 50px;
+                padding-top: 150px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -178,6 +203,10 @@ export default {
 
                     @include tablet {
                         flex-wrap: wrap;
+                    }
+
+                    .icon-link {
+                        cursor: pointer;
                     }
                 }
 

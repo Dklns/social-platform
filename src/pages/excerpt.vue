@@ -1,14 +1,14 @@
 <template>
     <div class="friend-excerpt">
-        <div class="left">
+        <div class="left" @click="() => gotoProfileHandler(friend.userId)">
             <div class="friend-profilePic">
                 <img :src="friend.profilePic" alt="">
             </div>
             <div class="friend-info">
-                <p class="friend-name">{{ friend.name }}</p>
+                <p class="friend-name">{{ friend.nickname }}</p>
                 <div class="sub-info">
-                    <span>{{ friend.city }}</span>
-                    <span>{{ friend.language }}</span>
+                    <span>{{ friend.userLocation }}</span>
+                    <span>{{ friend.userLang }}</span>
                 </div>
             </div>
         </div>
@@ -49,6 +49,11 @@ export default {
         MenuOutlined,
         CheckOutlined,
         SendOutlined
+    },
+    methods: {
+        gotoProfileHandler(userId) {
+            this.$router.push(`/profile/${userId}`)
+        }
     }
 }
 </script>
@@ -70,6 +75,7 @@ export default {
             display: flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
 
             .friend-profilePic {
                 img {
