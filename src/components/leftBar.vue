@@ -30,7 +30,6 @@
                     <img :src="Memories" />
                     <span>回忆瞬间</span>
                 </div>
-
             </div>
             <hr />
         </div>

@@ -19,7 +19,7 @@ const store = createStore({
         },
         setHomePosts(state, payload) {
             state.homePosts = payload;
-        }
+        },
     }
 })
 

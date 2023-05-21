@@ -30,7 +30,9 @@
                     </div>
                 </div>
                 <div className="right">
-                    <button @click="shareHandler">发表</button>
+                    <a-button type="primary" @click="shareHandler" :disabled="!content">
+                        发表
+                    </a-button>
                 </div>
             </div>
         </div>
@@ -42,7 +44,7 @@ import Image from "../assets/img.png";
 import Map from "../assets/map.png";
 import Friend from "../assets/friend.png";
 import { upload } from '../request/request';
-import { share } from "../request/post";
+import { share, getAllPost } from "../request/post";
 
 import { mapState } from 'vuex';
 
@@ -53,7 +55,7 @@ export default {
             Image,
             Map,
             Friend,
-            file: null,
+            file: "",
             imageUrl: "",
             content: ""
         }
@@ -66,24 +68,25 @@ export default {
     methods: {
         changeHandler(e) {
             this.file = e.target.files[0];
-
-            const formData = new FormData();
-            formData.append('img', this.file);
-            upload(formData).then(res => {
-                this.imageUrl = res.data.data.url;
-            })
+            this.imageUrl = URL.createObjectURL(this.file);
         },
-        shareHandler() {
-            if (this.content) {
-                share({
-                    desc: this.content,
-                    img: this.imageUrl
-                }).then(() => {
-                    
-                })
+        async shareHandler() {
+            const formData = new FormData();
+            formData.append('desc', this.content);
+            let res;
+            if (this.file) {
+                formData.append('img', this.file);
+                res = await upload(formData);
+                this.imageUrl = res.data.data.url;
             }
+            formData.set('img', this.imageUrl);
+            console.log(this.imageUrl);
+            await share(formData);
+            res = await getAllPost();
+            this.$store.commit("setHomePosts", res.data.data);
+            this.content = "";
+            this.imageUrl = "";
         }
-
     }
 }
 </script>

@@ -20,7 +20,7 @@
                     <template #overlay>
                         <a-menu>
                             <a-menu-item>
-                                <div class="delete">
+                                <div class="delete" @click="deleteHandler">
                                     删除
                                 </div>
                             </a-menu-item>
@@ -57,7 +57,7 @@
 <script>
 import Comment from './comment.vue';
 import { EllipsisOutlined, HeartOutlined } from '@ant-design/icons-vue';
-import { like, cancelLike } from '../request/post';
+import { like, cancelLike, deletePost, getAllPost, getPostByUserId } from '../request/post';
 
 import { mapState } from 'vuex';
 
@@ -87,8 +87,17 @@ export default {
             }
             this.isLike = !this.isLike;
         },
-        checkUserHandler() {
+        async deleteHandler() {
+            await deletePost(this.post.postId);
+            let res;
+            console.log(this.$route.path.includes("profile"));
+            if (this.$route.path.includes("profile")) {
+                res = await getPostByUserId(this.$store.state.currentUser.userId);
+            } else {
+                res = await getAllPost();
+            }
 
+            this.$store.commit("setHomePosts", res.data.data);
         }
     },
     components: {

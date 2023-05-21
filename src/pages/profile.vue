@@ -59,6 +59,8 @@ import Posts from '../components/posts.vue';
 import { getProfileData } from '../request/profile';
 import Update from '../components/update.vue';
 
+import { mapState } from 'vuex';
+
 export default {
     name: 'profile',
     data() {
@@ -83,7 +85,7 @@ export default {
     computed: {
         isShowUpdateForm() {
             return this.userId === this.$store.state.currentUser.userId;
-        }
+        },
     },
     methods: {
         setOpenUpdate(value) {

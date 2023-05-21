@@ -50,6 +50,14 @@ export function sendComment({ postId, content, commentId }) {
 
 }
 
+export function deletePost(postId) {
+    return instance.delete("/api/post", {
+        params: {
+            postId
+        }
+    })
+}
+
 export function likeComment(commentId) {
     return instance.post('/api/like/comment', {
         commentId
@@ -64,9 +72,6 @@ export function cancelLikeComment(commentId) {
     })
 }
 
-export function share({ desc, img }) {
-    return instance.post('/api/post', {
-        desc,
-        img
-    })
+export function share(formData) {
+    return instance.post('/api/post', formData)
 }
