@@ -2,7 +2,6 @@ import axios from 'axios';
 import instance from './index';
 
 export function register(inputs) {
-    // 如果注册成功，data为 success，否则data为失败原因(字符串)
     return axios.post('http://localhost:8080/smp/api/auth/register', { ...inputs });
 }
 
@@ -22,10 +21,6 @@ function logout() {
             resolve("success");
         });
     });
-}
-
-function getProfileData(userId) {
-    return instance.get(`/api/user/get-id/${userId}`);
 }
 
 function getComments(postId) {
@@ -95,13 +90,12 @@ function getFollower() {
     })
 }
 
-export function upload(formData) {  
+export function upload(formData) {
     return instance.post('/api/applet/upload', formData);
 }
 
 export {
     logout,
-    getProfileData,
     getComments,
     sendComment,
     getFollowing,

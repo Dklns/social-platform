@@ -33,45 +33,6 @@
 
             </div>
             <hr />
-            <div className="menu">
-                <span>快捷方式</span>
-                <div className="item">
-                    <img :src="Events" />
-                    <span>活动</span>
-                </div>
-                <div className="item">
-                    <img :src="Gaming" />
-                    <span>游戏</span>
-                </div>
-                <div className="item">
-                    <img :src="Gallery" />
-                    <span>空间</span>
-                </div>
-                <div className="item">
-                    <img :src="Video" />
-                    <span>视频</span>
-                </div>
-                <div className="item">
-                    <img :src="Message" />
-                    <span>消息</span>
-                </div>
-            </div>
-            <hr />
-            <div className="menu">
-                <span>其他</span>
-                <div className="item">
-                    <img :src="Fundraiser" />
-                    <span>众筹</span>
-                </div>
-                <div className="item">
-                    <img :src="Tutorials" />
-                    <span>教程</span>
-                </div>
-                <div className="item">
-                    <img :src="Courses" />
-                    <span>课程</span>
-                </div>
-            </div>
         </div>
     </div>
 </template>

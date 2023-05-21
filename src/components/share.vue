@@ -42,6 +42,7 @@ import Image from "../assets/img.png";
 import Map from "../assets/map.png";
 import Friend from "../assets/friend.png";
 import { upload } from '../request/request';
+import { share } from "../request/post";
 
 import { mapState } from 'vuex';
 
@@ -74,7 +75,12 @@ export default {
         },
         shareHandler() {
             if (this.content) {
-                
+                share({
+                    desc: this.content,
+                    img: this.imageUrl
+                }).then(() => {
+                    
+                })
             }
         }
 

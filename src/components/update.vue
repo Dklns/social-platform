@@ -1,49 +1,57 @@
 <template>
-    <div className="update">
-        <div className="wrapper">
-            <h1>Update Your Profile</h1>
-            <form>
-                <div className="files">
-                    <label htmlFor="cover">
-                        <span>Cover Picture</span>
-                        <div className="imgContainer">
-                            <img :src="computedCover" />
-                        </div>
-                    </label>
-                    <input type="file" id="cover" :style="{ display: `none` }" @change="(e) => cover = e.target.files[0]" />
-                    <label htmlFor="profile">
-                        <span>Profile Picture</span>
-                        <div className="imgContainer">
-                            <img :src="computedProfile" />
-                        </div>
-                    </label>
-                    <input type="file" id="profile" :style="{ display: `none` }"
-                        @change="(e) => profile = e.target.files[0]" />
-                </div>
-                <label>邮箱</label>
-                <input type=" text" name="email" v-model="formState.email" />
-                <label>密码</label>
-                <input type="text" name="password" v-model="formState.password" />
-                <label>昵称</label>
-                <input type="text" name="name" v-model="formState.nickname" />
-                <label>城市</label>
-                <input type="text" name="city" v-model="formState.city" />
-                <label>语言类型</label>
-                <input type="text" name="website" v-model="formState.language" />
-                <button @click="handleClick">Update</button>
-            </form>
-            <button className="close" @click="() => setOpenUpdate(false)">
-                close
-            </button>
+    <div class="update">
+        <div class="wrapper">
+            <h1>更新你的个人信息</h1>
+            <div className="files">
+                <label htmlFor="cover">
+                    <span>封面</span>
+                    <div class="imgContainer">
+                        <img :src="computedCover" />
+                    </div>
+                </label>
+                <input type="file" id="cover" :style="{ display: `none` }" @change="(e) => cover = e.target.files[0]" />
+                <label htmlFor="profile">
+                    <span>头像</span>
+                    <div class="imgContainer">
+                        <img :src="computedProfile" />
+                    </div>
+                </label>
+                <input type="file" id="profile" :style="{ display: `none` }" @change="(e) => profile = e.target.files[0]" />
+            </div>
+            <a-form :model="formState" :label-col="{ span: 4 }" :wrapper-col="{ span: 12 }" @finish="finishHandler">
+                <a-form-item label="昵称">
+                    <a-input v-model:value="formState.nickname" />
+                </a-form-item>
+                <a-form-item label="密码">
+                    <a-input v-model:value="formState.password" />
+                </a-form-item>
+                <a-form-item label="邮箱">
+                    <a-input v-model:value="formState.email" />
+                </a-form-item>
+                <a-form-item label="城市">
+                    <a-input v-model:value="formState.userLocation" />
+                </a-form-item>
+                <a-form-item label="语言类型">
+                    <a-input v-model:value="formState.userLang" />
+                </a-form-item>
+                <a-form-item>
+                    <div class="btn">
+                        <a-button type="primary" htmlType="submit">
+                            更新
+                        </a-button>
+                    </div>
+                </a-form-item>
+            </a-form>
         </div>
     </div>
 </template>
 
 <script>
-import { upload } from "../request/request"
+import { upload } from "../request/request";
+import { updateProfile, getProfileData } from '../request/profile';
 
 export default {
-    props: ["setOpenUpdate", "user"],
+    props: ["setOpenUpdate", "user", "updateUser"],
     data() {
         return {
             formState: {
@@ -62,15 +70,34 @@ export default {
         }
     },
     methods: {
-        async handleClick(e) {
-            e.preventDefault();
-            
-            let coverUrl, profileUrl;
+        async finishHandler() {
 
-            coverUrl = cover ? await upload(cover) : coverUrl;
-            profileUrl = profile ? await upload(profile) : profileUrl;
+            let coverUrl = this.computedCover;
+            let profileUrl = this.computedProfile;
 
-            console.log(coverUrl, profileUrl);
+            const formData = new FormData();
+
+            if (this.cover) {
+                formData.append("img", this.cover);
+                const res = await upload(formData);
+                coverUrl = res.data.data.url;
+            }
+
+            if (this.profile) {
+                formData.append("img", this.profile);
+                const res = await upload(formData);
+                profileUrl = res.data.data.url;
+            }
+
+            this.formState.coverPic = coverUrl;
+            this.formState.profilePic = profileUrl;
+
+            updateProfile(this.formState).then(async () => {
+                const res = await getProfileData(this.user.userId);
+                this.updateUser(res.data.data);
+                this.$store.commit('curUserUpdate', res.data.data);
+                this.setOpenUpdate(false);
+            })
         }
     }
 }
@@ -81,115 +108,68 @@ export default {
 @import "../style.scss";
 
 .update {
-    @include themify($themes) {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 800px;
 
-        .wrapper {
-            margin: auto;
-            width: 40%;
-            background-color: themed("bg");
-            padding: 50px;
-            z-index: 999;
+
+    .wrapper {
+        width: 800px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding-left: 100px;
+
+
+        h1 {
+            color: lightgrey;
+            text-align: center;
+            padding-right: 150px;
+        }
+
+        .btn {
+            display: flex;
+            justify-content: center;
+            padding-left: 200px;
+        }
+
+        .files {
+            display: flex;
+            justify-content: center;
+            padding-right: 200px;
+            flex-wrap: wrap;
+            gap: 100px;
+        }
+
+        label {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            -webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
-            -moz-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
-            box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
-            position: relative;
+            gap: 10px;
+            color: gray;
+            font-size: 14px;
 
-            @include mobile {
-                width: 100%;
-                height: 100%;
-            }
-
-            h1 {
-                color: lightgrey;
-
-                @include mobile {
-                    font-size: 20px;
+            .imgContainer {
+                img {
+                    width: 100px;
+                    height: 100px;
+                    object-fit: cover;
                 }
 
-            }
-
-            form {
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-
-                .files {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 50px;
-                }
-
-                label {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 10px;
-                    color: gray;
-                    font-size: 14px;
-
-                    .imgContainer {
-                        position: relative;
-
-                        img {
-                            width: 100px;
-                            height: 100px;
-                            object-fit: cover;
-                        }
-
-                        .icon {
-                            position: absolute;
-                            top: 0;
-                            bottom: 0;
-                            left: 0;
-                            right: 0;
-                            margin: auto;
-                            font-size: 30px;
-                            color: lightgray;
-                            cursor: pointer;
-                        }
-                    }
-                }
-
-                input {
-                    padding: 5px;
-                    border: none;
-                    border-bottom: 1px solid themed("border");
-                    color: gray;
-                    background-color: transparent;
-                }
-
-                button {
-                    border: none;
-                    padding: 10px;
+                .icon {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                    font-size: 30px;
+                    color: lightgray;
                     cursor: pointer;
-                    color: white;
-                    background-color: #5271ff;
                 }
-            }
-
-            .close {
-                position: absolute;
-                top: 10px;
-                right: 20px;
-                border: none;
-                background-color: #f0544f;
-                padding: 5px;
-                cursor: pointer;
-                color: white;
             }
         }
+
     }
 }
 </style>

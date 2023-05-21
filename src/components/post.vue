@@ -86,6 +86,9 @@ export default {
                 cancelLike(this.post.postId)
             }
             this.isLike = !this.isLike;
+        },
+        checkUserHandler() {
+
         }
     },
     components: {

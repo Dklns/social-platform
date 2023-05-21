@@ -20,11 +20,11 @@
                         <div className="info">
                             <div className="item">
                                 <i className="iconfont">&#xe602;</i>
-                                <span>{{ user.city }}</span>
+                                <span>{{ user.userLocation }}</span>
                             </div>
                             <div className="item">
                                 <i className="iconfont">&#xe654;</i>
-                                <span>{{ user.language }}</span>
+                                <span>{{ user.userLang }}</span>
                             </div>
                         </div>
                         <button v-if="!isShowUpdateForm">关注</button>
@@ -38,7 +38,9 @@
                 <Posts :userId="user.userId" />
             </div>
         </div>
-        <update :user="{ ...user }" :setOpenUpdate="setOpenUpdate" v-if="isOpenUpdate" />
+        <a-modal v-model:visible="isOpenUpdate" :style="{ width: `800px` }" :footer="null">
+            <update :user="{ ...user }" :setOpenUpdate="setOpenUpdate" :updateUser="updateUser" />
+        </a-modal>
     </div>
 </template>
 
@@ -54,7 +56,7 @@ import {
 
 import loadingMark from '../components/loadingMark.vue';
 import Posts from '../components/posts.vue';
-import { getProfileData } from '../request/request';
+import { getProfileData } from '../request/profile';
 import Update from '../components/update.vue';
 
 export default {
@@ -86,6 +88,9 @@ export default {
     methods: {
         setOpenUpdate(value) {
             this.isOpenUpdate = value;
+        },
+        updateUser(user) {
+            this.user = user;
         }
     },
     mounted() {

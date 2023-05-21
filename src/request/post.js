@@ -35,9 +35,7 @@ export function getComments(postId) {
 }
 
 export function sendComment({ postId, content, commentId }) {
-
     if (commentId) {
-        console.log('test');
         return instance.post('/api/comment', {
             postId,
             content,
@@ -66,8 +64,9 @@ export function cancelLikeComment(commentId) {
     })
 }
 
-export function share() {
+export function share({ desc, img }) {
     return instance.post('/api/post', {
-
+        desc,
+        img
     })
 }

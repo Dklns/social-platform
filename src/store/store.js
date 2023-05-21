@@ -4,7 +4,8 @@ const store = createStore({
     state() {
         return {
             currentUser: JSON.parse(localStorage.getItem('currentUser')) || null,
-            darkMode: JSON.parse(localStorage.getItem('darkMode')) || false
+            darkMode: JSON.parse(localStorage.getItem('darkMode')) || false,
+            homePosts: [],
         }
     },
     mutations: {
@@ -15,6 +16,9 @@ const store = createStore({
         darkModeUpdate(state) {
             state.darkMode = !state.darkMode;
             localStorage.setItem('darkMode', JSON.stringify(state.darkMode));
+        },
+        setHomePosts(state, payload) {
+            state.homePosts = payload;
         }
     }
 })
