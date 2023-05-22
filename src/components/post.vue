@@ -180,6 +180,7 @@ export default {
                     width: 20px;
                     height: 20px;
                     font-size: 20px;
+                    cursor: pointer;
                 }
 
                 .delete {
