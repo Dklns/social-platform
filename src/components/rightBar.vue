@@ -44,7 +44,7 @@
             <div class="item" v-if="onlineIsLoading">
                 <a-spin />
             </div>
-            <div className="item">
+            <div v-else className="item">
                 <span>在线好友</span>
                 <div className="user" v-for="user in online" :key="user.userId">
                     <div className="user-info">

@@ -38,3 +38,7 @@ export function getLatest() {
 export function getOnline() {
     return instance.get("/api/home/online");
 }
+
+export function getNotifications() {
+    return instance.get("/api/chat/getlist");
+}
