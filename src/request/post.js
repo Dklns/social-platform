@@ -58,6 +58,14 @@ export function deletePost(postId) {
     })
 }
 
+export function deleteComment(commentId) {
+    return instance.delete('/api/comment', {
+        params: {
+            commentId
+        }
+    })
+}
+
 export function likeComment(commentId) {
     return instance.post('/api/like/comment', {
         commentId

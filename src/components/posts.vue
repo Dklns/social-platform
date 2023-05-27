@@ -46,7 +46,6 @@ export default {
     },
     mounted() {
         if (this.userId) {
-            console.log("userId", this.userId);
             getPostByUserId(this.userId).then(res => {
                 this.code = res.data.code;
                 store.commit("setHomePosts", res.data.data);
@@ -56,7 +55,6 @@ export default {
             })
         } else {
             getAllPost().then(res => {
-                console.log(res);
                 store.commit("setHomePosts", res.data.data);
                 this.isLoading = false;
             }, reason => {

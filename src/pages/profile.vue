@@ -27,8 +27,9 @@
                                 <span>{{ user.userLang }}</span>
                             </div>
                         </div>
-                        <button v-if="!isShowUpdateForm">关注</button>
-                        <button v-else @click="() => setOpenUpdate(true)">更新</button>
+                        <button v-if="isShowUpdateForm" @click="() => setOpenUpdate(true)">更新</button>
+                        <button v-else-if="user.isFollowing" @click="cancelFollowingHandler">已关注</button>
+                        <button v-else @click="followHandler">关注</button>
                     </div>
                     <div className="right">
                         <i className="iconfont">&#xe61c;</i>
@@ -58,6 +59,7 @@ import loadingMark from '../components/loadingMark.vue';
 import Posts from '../components/posts.vue';
 import { getProfileData } from '../request/profile';
 import Update from '../components/update.vue';
+import { follow, cancelFollowing } from '../request/friend';
 
 import { mapState } from 'vuex';
 
@@ -93,6 +95,16 @@ export default {
         },
         updateUser(user) {
             this.user = user;
+        },
+        followHandler() {
+            follow(this.user.userId).then(() => {
+                this.user.isFollowing = true;
+            })
+        },
+        cancelFollowingHandler() {
+            cancelFollowing(this.user.userId).then(() => {
+                this.user.isFollowing = false;
+            })
         }
     },
     mounted() {

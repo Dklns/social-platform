@@ -49,7 +49,8 @@
                     分享
                 </div>
             </div>
-            <Comment v-if="openComment" :postId="post.postId" />
+            <Comment v-if="openComment" :postId="post.postId" @send="sendHandler" :userId="post.userId"
+                @delete="deleteCommentHandler" />
         </div>
     </div>
 </template>
@@ -98,6 +99,12 @@ export default {
             }
 
             this.$store.commit("setHomePosts", res.data.data);
+        },
+        sendHandler() {
+            this.commentNum++;
+        },
+        deleteCommentHandler() {
+            this.commentNum--;
         }
     },
     components: {
