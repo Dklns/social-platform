@@ -54,3 +54,7 @@ export function getOnline() {
 export function getNotifications() {
     return instance.get("/api/chat/getlist");
 }
+
+export function getAllCount() {
+    return instance.get('/api/chat/count');
+}

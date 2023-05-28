@@ -19,8 +19,10 @@
                     </router-link>
                 </div>
                 <div className="item">
-                    <img :src="Watch" />
-                    <span>浏览记录</span>
+                    <router-link :to="'/history'">
+                        <img :src="Watch" />
+                        <span>浏览记录</span>
+                    </router-link>
                 </div>
             </div>
             <hr />

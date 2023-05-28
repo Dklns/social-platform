@@ -14,10 +14,14 @@ export default {
     ...mapState(['currentUser'])
   },
   mounted() {
-    if (this.currentUser) online();
-  },
-  unmounted() {
-    if (this.currentUser) offline();
+    if (this.currentUser) {
+      online();
+      window.addEventListener('beforeunload', () => {
+        if (this.currentUser) {
+          offline();
+        }
+      })
+    }
   }
 }
 

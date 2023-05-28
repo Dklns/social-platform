@@ -69,6 +69,7 @@ import {
     ExportOutlined,
 } from '@ant-design/icons-vue';
 import Notice from './notice.vue';
+import { getAllCount } from '../request/request';
 
 import { mapState } from 'vuex';
 
@@ -107,6 +108,11 @@ export default {
         openDrawerHandler() {
             this.isShowDrawer = true;
         }
+    },
+    mounted() {
+        getAllCount().then(res => {
+            console.log(res);
+        })
     }
 }
 </script>

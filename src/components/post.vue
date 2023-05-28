@@ -1,5 +1,5 @@
 <template>
-    <div className="post">
+    <div className="post" ref="post">
         <div className="container">
             <div className="user">
                 <div className="user-info">
@@ -63,6 +63,7 @@
 import Comment from './comment.vue';
 import { EllipsisOutlined, HeartOutlined, ShareAltOutlined } from '@ant-design/icons-vue';
 import { like, cancelLike, deletePost, getAllPost, getPostByUserId } from '../request/post';
+import { addHistory } from '../request/history';
 
 import { mapState } from 'vuex';
 
@@ -109,14 +110,26 @@ export default {
         },
         deleteCommentHandler() {
             this.commentNum--;
-        }
+        },
     },
     components: {
         Comment,
         EllipsisOutlined,
         HeartOutlined,
         ShareAltOutlined
-    }
+    },
+    mounted() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    // 当元素进入视口范围时触发
+                    addHistory(this.post.postId);
+                }
+            });
+        });
+
+        observer.observe(this.$refs.post);
+    },
 }
 </script>
 

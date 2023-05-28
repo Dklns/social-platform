@@ -12,7 +12,7 @@ import Register from './pages/register.vue';
 import Profile from './pages/profile.vue';
 import Friends from './pages/friends.vue';
 import Chat from './pages/chat.vue';
-
+import BrowsingHistory from './pages/BrowsingHistory.vue';
 import shop from './pages/shop.vue'
 
 const routes = [
@@ -39,6 +39,10 @@ const routes = [
             {
                 path: '/chat/:userId',
                 component: Chat
+            },
+            {
+                path: '/history',
+                component: BrowsingHistory
             }
         ]
     },
