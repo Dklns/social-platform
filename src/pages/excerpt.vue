@@ -19,17 +19,17 @@
                 </button>
             </div>
             <div class="follow-button">
-                <button v-if="isShowFollowingList">
+                <button v-if="isShowFollowingList" @click="cancelFollowingHandler">
                     <span>
                         <menu-outlined />已关注
                     </span>
                 </button>
-                <button v-else-if="friend.isFollowing">
+                <button v-else-if="friend.isFollowing" @click="cancelFollowingHandler">
                     <span>
                         <menu-outlined />已互关
                     </span>
                 </button>
-                <button v-else :style="{ backgroundColor: `#fff` }">
+                <button v-else :style="{ backgroundColor: `#fff` }" @click="followHandler">
                     <span>
                         <check-outlined />关注
                     </span>
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { follow, cancelFollowing, getFollowedUsers, getFollowers } from '../request/friend';
 import { MenuOutlined, CheckOutlined, SendOutlined } from '@ant-design/icons-vue';
 
 export default {
@@ -53,9 +54,29 @@ export default {
     methods: {
         gotoProfileHandler(userId) {
             this.$router.push(`/profile/${userId}`)
+        },
+        async cancelFollowingHandler() {
+            await cancelFollowing(this.friend.userId);
+            this.refresh();
+        },
+        async followHandler() {
+            await follow(this.friend.userId);
+            this.refresh();
+        },
+        async refresh() {
+            console.log('test');
+            let res = await getFollowedUsers();
+            const followingList = res.data.data;
+            res = await getFollowers();
+            const followerList = res.data.data;
+            this.$emit("setList", {
+                followerList,
+                followingList
+            })
         }
-    }
+    },
 }
+
 </script>
 
 <style lang="scss">
@@ -120,16 +141,19 @@ export default {
 
             .follow-button {
                 width: 80px;
+                cursor: pointer;
 
                 button {
                     border: 1px solid transparent;
                     border-radius: 10px;
                     background-color: #e5e9ef;
+                    cursor: pointer;
 
                     span {
                         display: flex;
                         align-items: center;
                         gap: 5px;
+                        cursor: pointer;
                     }
                 }
             }

@@ -4,7 +4,6 @@
             <router-link to='/'>
                 <span>Our Social</span>
             </router-link>
-            <home-outlined />
             <BulbFilled v-if="darkMode" @click="toggle" />
             <BulbOutlined v-else @click="toggle" />
             <AppstoreOutlined />
@@ -14,6 +13,12 @@
             </div>
         </div>
         <div class="right">
+            <div class="notice">
+                <mail-outlined @click="openDrawerHandler" />
+                <a-drawer v-model:visible="isShowDrawer" :width="420">
+                    <Notice v-if="isShowDrawer" />
+                </a-drawer>
+            </div>
             <a-dropdown>
                 <div class="user">
                     <img :src="currentUser.profilePic" />
@@ -61,8 +66,9 @@ import {
     UserOutlined,
     MailOutlined,
     BellOutlined,
-    ExportOutlined
+    ExportOutlined,
 } from '@ant-design/icons-vue';
+import Notice from './notice.vue';
 
 import { mapState } from 'vuex';
 
@@ -70,6 +76,7 @@ export default {
     name: 'navBar',
     data() {
         return {
+            isShowDrawer: false
         }
     },
     computed: {
@@ -87,7 +94,8 @@ export default {
         UserOutlined,
         MailOutlined,
         BellOutlined,
-        ExportOutlined
+        ExportOutlined,
+        Notice
     },
     methods: {
         toggle() {
@@ -95,6 +103,9 @@ export default {
         },
         gotoProfileHandler() {
             this.$router.push(`/profile/${this.currentUser.userId}`);
+        },
+        openDrawerHandler() {
+            this.isShowDrawer = true;
         }
     }
 }
@@ -183,6 +194,12 @@ export default {
                     border-radius: 50%;
                     object-fit: cover;
                 }
+            }
+
+            .notice {
+                font-size: 20px;
+                cursor: pointer;
+                margin-right: 20px;
             }
         }
     }

@@ -13,14 +13,14 @@
         <div class="friends-list" v-if="isShowFollowingList">
             <ul>
                 <li v-for="friend in followingList" :key="friend.id">
-                    <friend-excerpt :friend="friend" :isShowFollowingList="isShowFollowingList" />
+                    <friend-excerpt :friend="friend" :isShowFollowingList="isShowFollowingList" @setList="setListHandler" />
                 </li>
             </ul>
         </div>
         <div class="friends-list" v-else>
             <ul>
                 <li v-for="friend in followerList" :key="friend.id">
-                    <friend-excerpt :friend="friend" :isShowFollowingList="isShowFollowingList" />
+                    <friend-excerpt :friend="friend" :isShowFollowingList="isShowFollowingList" @setList="setListHandler" />
                 </li>
             </ul>
         </div>
@@ -32,7 +32,7 @@ import { SearchOutlined } from '@ant-design/icons-vue';
 
 import FriendExcerpt from './excerpt.vue';
 
-import { getFollowedUsers } from '../request/friend';
+import { getFollowedUsers, getFollowers } from '../request/friend';
 
 export default {
     name: "friends",
@@ -52,13 +52,18 @@ export default {
         listToggleHandler() {
             this.isShowFollowingList = !this.isShowFollowingList;
             this.list = this.isShowFollowingList ? this.followingList : this.followerList;
-        }
+        },
+        setListHandler({ followingList, followerList }) {
+            console.log(followerList, followingList);
+            this.followingList = followingList;
+            this.followerList = followerList;
+        },
     },
     mounted() {
         getFollowedUsers()
             .then(res => {
                 this.followingList = res.data.data;
-                return getFollowedUsers();
+                return getFollowers();
             })
             .then(res => {
                 this.followerList = res.data.data;

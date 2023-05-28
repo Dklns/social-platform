@@ -10,6 +10,10 @@
             <img :src="comment.profilePic" class="comment-profilePic" alt="" />
             <div className="comment-body">
                 <span class="comment-name">{{ comment.name }}</span>
+                <span class="delete" v-if="comment.userId === currentUser.userId || userId === currentUser.userId"
+                    @click="() => deleteHandler(comment.id)">
+                    <delete-outlined />
+                </span>
                 <p class="comment-desc">{{ comment.content }}</p>
                 <div class="comment-info">
                     <span className='date'>
@@ -34,6 +38,10 @@
                 <img :src="subComment.profilePic" class="sub-comment-profilePic" alt="" />
                 <div className="sub-comment-body">
                     <span class="sub-comment-name">{{ subComment.name }}</span>
+                    <span class="delete" v-if="comment.userId === currentUser.userId || userId === currentUser.userId"
+                        @click="() => deleteHandler(subComment.id)">
+                        <delete-outlined />
+                    </span>
                     <p class="sub-comment-desc">{{ subComment.content }}</p>
                     <div class="sub-comment-info">
                         <span className='sub-date'>
@@ -60,8 +68,8 @@
 </template>
 
 <script>
-import { getComments, sendComment, likeComment, cancelLikeComment } from '../request/post';
-import { LikeOutlined } from '@ant-design/icons-vue';
+import { getComments, sendComment, likeComment, cancelLikeComment, deleteComment } from '../request/post';
+import { LikeOutlined, DeleteOutlined } from '@ant-design/icons-vue';
 
 import { mapState } from 'vuex';
 
@@ -69,7 +77,7 @@ import loadingMark from './loadingMark.vue';
 
 export default {
     name: 'comment',
-    props: ["postId"],
+    props: ["postId", "userId"],
     data() {
         return {
             content: "",
@@ -85,7 +93,8 @@ export default {
     },
     components: {
         LikeOutlined,
-        loadingMark
+        loadingMark,
+        DeleteOutlined
     },
     computed: {
         ...mapState({
@@ -101,6 +110,8 @@ export default {
                 content: this.content
             }).then(() => {
                 this.content = "";
+                this.$emit("send")
+                this.isLoading = true;
                 getComments(this.postId).then(res => {
                     this.comments = res.data.data
                     this.isLoading = false;
@@ -126,6 +137,7 @@ export default {
                 commentId
             }).then(() => {
                 this.content = "";
+                this.$emit("send")
                 getComments(this.postId).then(res => {
                     this.comments = res.data.data
                     this.isLoading = false;
@@ -150,11 +162,20 @@ export default {
                 })
             }
 
+        },
+        deleteHandler(commentId) {
+            deleteComment(commentId).then(() => {
+                this.isLoading = true;
+                getComments(this.postId).then(res => {
+                    this.comments = res.data.data
+                    this.isLoading = false;
+                    this.$emit('delete');
+                });
+            })
         }
     },
     mounted() {
         getComments(this.postId).then(res => {
-            console.log(res);
             this.comments = res.data.data
             this.isLoading = false;
         });
@@ -218,16 +239,26 @@ export default {
                 left: 0;
             }
 
+            .delete {
+                position: absolute;
+                right: 30px;
+                top: 10px;
+                cursor: pointer;
+            }
+
             .comment-body {
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
                 gap: 5px;
+                position: relative;
 
                 .comment-name {
                     font-weight: 500;
                     font-size: 16px;
                 }
+
+
 
                 .comment-desc {
                     color: themed('textColorSoft');
@@ -283,6 +314,7 @@ export default {
                     flex-direction: column;
                     justify-content: space-between;
                     gap: 5px;
+                    position: relative;
 
                     .sub-comment-name {
                         font-weight: 500;

@@ -42,21 +42,26 @@
                 </div>
                 <div className="item" @click="() => openComment = !openComment">
                     <i className="iconfont comments">&#xe6ad;</i>
-                    {{ commentNum }} 评论
+                    <span>
+                        {{ commentNum }} 评论
+                    </span>
                 </div>
                 <div className="item">
-                    <i className="iconfont share">&#xe739;</i>
-                    分享
+                    <ShareAltOutlined />
+                    <span>
+                        分享
+                    </span>
                 </div>
             </div>
-            <Comment v-if="openComment" :postId="post.postId" />
+            <Comment v-if="openComment" :postId="post.postId" @send="sendHandler" :userId="post.userId"
+                @delete="deleteCommentHandler" />
         </div>
     </div>
 </template>
 
 <script>
 import Comment from './comment.vue';
-import { EllipsisOutlined, HeartOutlined } from '@ant-design/icons-vue';
+import { EllipsisOutlined, HeartOutlined, ShareAltOutlined } from '@ant-design/icons-vue';
 import { like, cancelLike, deletePost, getAllPost, getPostByUserId } from '../request/post';
 
 import { mapState } from 'vuex';
@@ -98,12 +103,19 @@ export default {
             }
 
             this.$store.commit("setHomePosts", res.data.data);
+        },
+        sendHandler() {
+            this.commentNum++;
+        },
+        deleteCommentHandler() {
+            this.commentNum--;
         }
     },
     components: {
         Comment,
         EllipsisOutlined,
         HeartOutlined,
+        ShareAltOutlined
     }
 }
 </script>
@@ -180,6 +192,7 @@ export default {
                     width: 20px;
                     height: 20px;
                     font-size: 20px;
+                    cursor: pointer;
                 }
 
                 .delete {
