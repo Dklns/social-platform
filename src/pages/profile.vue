@@ -28,7 +28,7 @@
                             </div>
                         </div>
                         <button v-if="isShowUpdateForm" @click="() => setOpenUpdate(true)">更新</button>
-                        <button v-else-if="user.isFollowing" @click="cancelFollowingHandler">已关注</button>
+                        <button v-else-if="user.isFollowed" @click="cancelFollowingHandler">已关注</button>
                         <button v-else @click="followHandler">关注</button>
                     </div>
                     <div className="right">
@@ -98,18 +98,19 @@ export default {
         },
         followHandler() {
             follow(this.user.userId).then(() => {
-                this.user.isFollowing = true;
+                this.user.isFollowed = true;
             })
         },
         cancelFollowingHandler() {
             cancelFollowing(this.user.userId).then(() => {
-                this.user.isFollowing = false;
+                this.user.isFollowed = false;
             })
         }
     },
     mounted() {
         this.userId = parseInt(this.$route.params.userId);
         getProfileData(this.userId).then(res => {
+            console.log(res);
             this.isLoading = false;
             const { code, data } = res.data;
             if (code === 1) {

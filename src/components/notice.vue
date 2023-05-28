@@ -2,7 +2,7 @@
     <div class="notice">
         <h3>消息列表</h3>
         <div class="list">
-            <div class="item" v-for="item in list" :key="item.userId">
+            <div class="item" v-for="item in list" :key="item.userId" @click="() => chatHandler(item.userId)">
                 <div class="left">
                     <div class="img-container">
                         <img :src="item.profilePic" />
@@ -30,11 +30,15 @@ export default {
             list: [],
         }
     },
+    methods: {
+        chatHandler(userId) {
+            this.$router.push(`/chat/${userId}`);
+        }
+    },
     mounted() {
         getNotifications().then(res => {
             console.log(res.data.data);
             this.list = res.data.data;
-
             this.list.forEach(item => {
                 item.latestTime = moment(item.latestTime).fromNow();
             })

@@ -11,6 +11,7 @@ import Login from './pages/login.vue';
 import Register from './pages/register.vue';
 import Profile from './pages/profile.vue';
 import Friends from './pages/friends.vue';
+import Chat from './pages/chat.vue';
 
 import shop from './pages/shop.vue'
 
@@ -34,6 +35,10 @@ const routes = [
             {
                 path: '/shop',
                 component: shop
+            },
+            {
+                path: '/chat/:userId',
+                component: Chat
             }
         ]
     },
