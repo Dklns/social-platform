@@ -98,6 +98,7 @@ export default {
         },
         followHandler() {
             follow(this.user.userId).then(() => {
+                console.log(this.user.userId);
                 this.user.isFollowed = true;
             })
         },

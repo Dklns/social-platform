@@ -74,7 +74,8 @@ export default {
             nickname: "",
             userId: "",
             message: "",
-            timer: null
+            timer: null,
+            isToBottom: false
         }
     },
     components: {
@@ -90,8 +91,10 @@ export default {
     watch: {
         $route: {
             immediate: true,
-            handler() {
-                this.getList(this.$route.params.userId);
+            handler(to, from) {
+                if (to.path.includes('chat')) {
+                    this.getList(this.$route.params.userId);
+                }
             }
         }
     },
@@ -101,7 +104,10 @@ export default {
                 this.list = res.data.data;
                 console.log(res.data.data);
                 this.userId = parseInt(userId);
+                clearInterval(this.timer);
+                console.log(this.timer);
 
+                // 计算是否显示时间提示
                 let lastTime = "";
                 this.list.forEach((item, index) => {
                     if (index === 0) {
@@ -126,14 +132,38 @@ export default {
                 const listDOM = this.$refs.list
 
                 listDOM.scrollTo(0, listDOM.scrollHeight);
+
+                // 开始不断请求
+                this.timer = setInterval(() => {
+                    this.redo();
+                }, 1000);
             })
         },
         async redo() {
             return getChat(this.userId).then(res => {
                 this.list = res.data.data;
-                this.list.forEach(item => {
-                    item.date = moment(item.time).fromNow();
+                const listDOM = this.$refs.list;
+                if (parseInt(listDOM.scrollHeight) - 2 <= parseInt(listDOM.scrollTop) + parseInt(listDOM.clientHeight)) this.isToBottom = true;
+
+                // 计算是否显示时间提示
+                let lastTime = "";
+                this.list.forEach((item, index) => {
+                    if (index === 0) {
+                        item.hint = moment(item.time).fromNow();
+                    }
+
+                    const t1 = moment(lastTime);
+                    const t2 = moment(item.time);
+                    if (t2.diff(t1, 'minutes') >= 3) {
+                        item.hint = t2.fromNow();
+                    }
+
+                    lastTime = item.time;
                 })
+            }).then(() => {
+                const listDOM = this.$refs.list;
+                if (this.isToBottom) listDOM.scrollTo(0, listDOM.scrollHeight);
+                this.isToBottom = false;
             })
         },
         sendMessageHandler() {
@@ -151,6 +181,9 @@ export default {
             })
         }
     },
+    onUnmounted() {
+        clearInterval(this.timer);
+    }
 }
 </script>
 
@@ -188,6 +221,11 @@ export default {
             .list {
                 overflow-y: scroll;
                 height: calc(100% - 170px);
+                scrollbar-width: none;
+
+                &::-webkit-scrollbar {
+                    display: none;
+                }
 
                 .item {
 

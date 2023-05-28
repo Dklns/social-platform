@@ -5,10 +5,20 @@
 </template>
 
 <script>
-
+import { online, offline } from './request/request';
+import { mapState } from 'vuex';
 
 export default {
   name: 'app',
+  computed: {
+    ...mapState(['currentUser'])
+  },
+  mounted() {
+    if (this.currentUser) online();
+  },
+  unmounted() {
+    if (this.currentUser) offline();
+  }
 }
 
 </script>

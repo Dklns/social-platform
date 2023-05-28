@@ -13,10 +13,6 @@
                     </router-link>
                 </div>
                 <div className="item">
-                    <img :src="Groups" />
-                    <span>用户群组</span>
-                </div>
-                <div className="item">
                     <router-link :to="'/shop'">
                         <img :src="Market" />
                         <span>积分商城</span>
@@ -25,10 +21,6 @@
                 <div className="item">
                     <img :src="Watch" />
                     <span>浏览记录</span>
-                </div>
-                <div className="item">
-                    <img :src="Memories" />
-                    <span>回忆瞬间</span>
                 </div>
             </div>
             <hr />

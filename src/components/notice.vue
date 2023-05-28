@@ -38,6 +38,7 @@ export default {
     mounted() {
         getNotifications().then(res => {
             console.log(res.data.data);
+            console.log(res.data.data);
             this.list = res.data.data;
             this.list.forEach(item => {
                 item.latestTime = moment(item.latestTime).fromNow();

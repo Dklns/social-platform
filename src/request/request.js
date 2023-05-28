@@ -23,12 +23,24 @@ export function logout() {
     });
 }
 
+export function online() {
+    return instance.post('/api/user/markline');
+}
+
+export function offline() {
+    return instance.delete('/api/user/markline');
+}
+
 export function upload(formData) {
     return instance.post('/api/applet/upload', formData);
 }
 
 export function getRecommendUsers() {
-    return instance.get("/api/home/user");
+    return instance.get("/api/home/user", {
+        params: {
+            count: 3
+        }
+    });
 }
 
 export function getLatest() {
