@@ -86,10 +86,10 @@ export default {
         likeHandler() {
             if (this.isLike) {
                 this.likeNum -= 1;
-                like(this.post.postId)
+                cancelLike(this.post.postId)
             } else {
                 this.likeNum += 1;
-                cancelLike(this.post.postId)
+                like(this.post.postId)
             }
             this.isLike = !this.isLike;
         },
@@ -119,16 +119,17 @@ export default {
         ShareAltOutlined
     },
     mounted() {
-        // const observer = new IntersectionObserver((entries) => {
-        //     entries.forEach((entry) => {
-        //         if (entry.isIntersecting) {
-        //             // 当元素进入视口范围时触发
-        //             addHistory(this.post.postId);
-        //         }
-        //     });
-        // });
+        console.log(this.post);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    // 当元素进入视口范围时触发
+                    addHistory(this.post.postId);
+                }
+            });
+        });
 
-        // observer.observe(this.$refs.post);
+        observer.observe(this.$refs.post);
     },
 }
 </script>
