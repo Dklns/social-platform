@@ -9,3 +9,15 @@ export function addHistory(postId) {
         postId
     });
 }
+
+export function deleteHistory(id) {
+    return instance.get('/api/history/single', {
+        params: {
+            id
+        }
+    })
+};
+
+export function deleteAllHistory() {
+    return instance.delete('/api/history');
+}

@@ -73,8 +73,14 @@ export default {
         UserExcerpt
     },
     methods: {
-        setUsersHandler({ followerList }) {
-            this.users = followerList;
+        setUsersHandler() {
+            const query = this.$route.params.query;
+            this.isLoading = true;
+            search(query).then(res => {
+                this.isLoading = false;
+                const { users } = res.data.data;
+                this.users = users;
+            })
         }
     }
 }

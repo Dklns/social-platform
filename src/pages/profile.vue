@@ -32,7 +32,8 @@
                         <button v-else @click="followHandler">关注</button>
                     </div>
                     <div className="right">
-                        <i className="iconfont">&#xe61c;</i>
+                        <message-outlined :style="{ cursor: `pointer`, fontSize: `20px` }" v-if="!isShowUpdateForm"
+                            @click="gotoChatHandler" />
                         <i className="iconfont">&#xe719;</i>
                     </div>
                 </div>
@@ -52,7 +53,8 @@ import {
     WechatFilled,
     FacebookFilled,
     InstagramFilled,
-    WeiboCircleFilled
+    WeiboCircleFilled,
+    MessageOutlined
 } from '@ant-design/icons-vue';
 
 import loadingMark from '../components/loadingMark.vue';
@@ -81,6 +83,7 @@ export default {
         FacebookFilled,
         InstagramFilled,
         WeiboCircleFilled,
+        MessageOutlined,
         loadingMark,
         Update
     },
@@ -130,6 +133,9 @@ export default {
             cancelFollowing(this.user.userId).then(() => {
                 this.user.isFollowed = false;
             })
+        },
+        gotoChatHandler() {
+            this.$router.push(`/chat/${this.user.userId}`)
         }
     }
 }

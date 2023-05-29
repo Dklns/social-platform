@@ -23,7 +23,7 @@
                     <a-input v-model:value="formState.nickname" />
                 </a-form-item>
                 <a-form-item label="密码">
-                    <a-input v-model:value="formState.password" />
+                    <a-input-password v-model:value="formState.password" />
                 </a-form-item>
                 <a-form-item label="邮箱">
                     <a-input v-model:value="formState.email" />

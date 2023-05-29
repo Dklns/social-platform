@@ -119,7 +119,6 @@ export default {
         ShareAltOutlined
     },
     mounted() {
-        console.log(this.post);
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
