@@ -11,8 +11,10 @@ import Login from './pages/login.vue';
 import Register from './pages/register.vue';
 import Profile from './pages/profile.vue';
 import Friends from './pages/friends.vue';
-
+import Chat from './pages/chat.vue';
+import BrowsingHistory from './pages/BrowsingHistory.vue';
 import shop from './pages/shop.vue'
+import SearchResult from './pages/SearchResult.vue'
 
 const routes = [
     {
@@ -34,6 +36,18 @@ const routes = [
             {
                 path: '/shop',
                 component: shop
+            },
+            {
+                path: '/chat/:userId',
+                component: Chat
+            },
+            {
+                path: '/history',
+                component: BrowsingHistory
+            },
+            {
+                path: "/search/:query",
+                component: SearchResult
             }
         ]
     },

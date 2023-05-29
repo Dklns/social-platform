@@ -14,7 +14,7 @@
         </div>
         <div class="right">
             <div class="send">
-                <button>
+                <button @click="() => gotoChatHandler(friend.userId)">
                     <send-outlined />
                 </button>
             </div>
@@ -64,7 +64,6 @@ export default {
             this.refresh();
         },
         async refresh() {
-            console.log('test');
             let res = await getFollowedUsers();
             const followingList = res.data.data;
             res = await getFollowers();
@@ -73,6 +72,9 @@ export default {
                 followerList,
                 followingList
             })
+        },
+        gotoChatHandler(userId) {
+            this.$router.push(`/chat/${userId}`);              
         }
     },
 }

@@ -4,8 +4,11 @@
             {{ error }}
         </p>
         <loadingMark v-else-if="isLoading" />
-        <div v-else-if="code === 604" class="empty">
-            <div v-if="currentUser.userId === userId" class="content">
+        <div v-else-if="code === 604 || posts.length === 0" class="empty">
+            <div v-if="searchResult" class="content">
+                无搜索结果
+            </div>
+            <div v-else-if="currentUser.userId === userId" class="content">
                 您还没发布过帖子
             </div>
             <div v-else class="content">
@@ -26,7 +29,7 @@ import { mapState } from 'vuex';
 import store from '../store/store';
 
 export default {
-    props: ["userId"],
+    props: ["userId", "searchResult"],
     data() {
         return {
             isLoading: true,
@@ -45,7 +48,11 @@ export default {
         })
     },
     mounted() {
-        if (this.userId) {
+        if (this.searchResult) {
+            console.log('posts search');
+            store.commit("setHomePosts", this.searchResult);
+            this.isLoading = false;
+        } else if (this.userId) {
             getPostByUserId(this.userId).then(res => {
                 this.code = res.data.code;
                 store.commit("setHomePosts", res.data.data);

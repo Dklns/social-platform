@@ -28,11 +28,12 @@
                             </div>
                         </div>
                         <button v-if="isShowUpdateForm" @click="() => setOpenUpdate(true)">更新</button>
-                        <button v-else-if="user.isFollowing" @click="cancelFollowingHandler">已关注</button>
+                        <button v-else-if="user.isFollowed" @click="cancelFollowingHandler">已关注</button>
                         <button v-else @click="followHandler">关注</button>
                     </div>
                     <div className="right">
-                        <i className="iconfont">&#xe61c;</i>
+                        <message-outlined :style="{ cursor: `pointer`, fontSize: `20px` }" v-if="!isShowUpdateForm"
+                            @click="gotoChatHandler" />
                         <i className="iconfont">&#xe719;</i>
                     </div>
                 </div>
@@ -52,7 +53,8 @@ import {
     WechatFilled,
     FacebookFilled,
     InstagramFilled,
-    WeiboCircleFilled
+    WeiboCircleFilled,
+    MessageOutlined
 } from '@ant-design/icons-vue';
 
 import loadingMark from '../components/loadingMark.vue';
@@ -81,6 +83,7 @@ export default {
         FacebookFilled,
         InstagramFilled,
         WeiboCircleFilled,
+        MessageOutlined,
         loadingMark,
         Update
     },
@@ -88,6 +91,30 @@ export default {
         isShowUpdateForm() {
             return this.userId === this.$store.state.currentUser.userId;
         },
+    },
+    watch: {
+        $route: {
+            immediate: true,
+            handler(to, from) {
+                if (to.path.includes('profile')) {
+                    console.log(to);
+                    this.isLoading = true;
+                    this.userId = parseInt(to.params.userId);
+                    getProfileData(this.userId).then(res => {
+                        console.log(res);
+                        this.isLoading = false;
+                        const { code, data } = res.data;
+                        if (code === 1) {
+                            this.user = data;
+                        } else {
+                            this.err = "获取数据失败";
+                        }
+                    }, reason => {
+                        this.err = reason;
+                    })
+                }
+            }
+        }
     },
     methods: {
         setOpenUpdate(value) {
@@ -98,28 +125,18 @@ export default {
         },
         followHandler() {
             follow(this.user.userId).then(() => {
-                this.user.isFollowing = true;
+                console.log(this.user.userId);
+                this.user.isFollowed = true;
             })
         },
         cancelFollowingHandler() {
             cancelFollowing(this.user.userId).then(() => {
-                this.user.isFollowing = false;
+                this.user.isFollowed = false;
             })
+        },
+        gotoChatHandler() {
+            this.$router.push(`/chat/${this.user.userId}`)
         }
-    },
-    mounted() {
-        this.userId = parseInt(this.$route.params.userId);
-        getProfileData(this.userId).then(res => {
-            this.isLoading = false;
-            const { code, data } = res.data;
-            if (code === 1) {
-                this.user = data;
-            } else {
-                this.err = "获取数据失败";
-            }
-        }, reason => {
-            this.err = reason;
-        })
     }
 }
 

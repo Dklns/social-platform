@@ -16,19 +16,35 @@ export function login(inputs) {
 }
 
 export function logout() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve("success");
-        });
-    });
+    return instance.post("/api/auth/logout");
+}
+
+export function online() {
+    return instance.post('/api/user/markline');
+}
+
+export function offline() {
+    return instance.delete('/api/user/markline');
 }
 
 export function upload(formData) {
     return instance.post('/api/applet/upload', formData);
 }
 
+export function search(query) {
+    return instance.get('/api/search', {
+        params: {
+            query
+        }
+    })
+}
+
 export function getRecommendUsers() {
-    return instance.get("/api/home/user");
+    return instance.get("/api/home/user", {
+        params: {
+            count: 3
+        }
+    });
 }
 
 export function getLatest() {
@@ -41,4 +57,8 @@ export function getOnline() {
 
 export function getNotifications() {
     return instance.get("/api/chat/getlist");
+}
+
+export function getAllCount() {
+    return instance.get('/api/chat/count');
 }

@@ -2,7 +2,7 @@
     <div class="notice">
         <h3>消息列表</h3>
         <div class="list">
-            <div class="item" v-for="item in list" :key="item.userId">
+            <div class="item" v-for="item in list" :key="item.userId" @click="() => chatHandler(item.userId, item.count)">
                 <div class="left">
                     <div class="img-container">
                         <img :src="item.profilePic" />
@@ -13,6 +13,9 @@
                     <p class="message">{{ item.latestMsg }}</p>
                     <p class="time">
                         {{ item.latestTime }}
+                    </p>
+                    <p class="count" v-if="item.count > 0">
+                        {{ item.count > 99 ? 99 : item.count }}
                     </p>
                 </div>
             </div>
@@ -30,11 +33,17 @@ export default {
             list: [],
         }
     },
+    methods: {
+        chatHandler(userId, count) {
+            this.$emit('read');
+            this.$store.commit('addCount', -count);
+            this.$router.push(`/chat/${userId}`);
+        }
+    },
     mounted() {
         getNotifications().then(res => {
             console.log(res.data.data);
             this.list = res.data.data;
-
             this.list.forEach(item => {
                 item.latestTime = moment(item.latestTime).fromNow();
             })
@@ -98,6 +107,20 @@ export default {
                     top: 10px;
                     font-size: 13px;
                     color: '#666';
+                }
+
+                .count {
+                    width: 20px;
+                    height: 20px;
+                    line-height: 20px;
+                    font-size: 12px;
+                    text-align: center;
+                    position: absolute;
+                    right: 20px;
+                    top: 40px;
+                    border-radius: 50%;
+                    background-color: red;
+                    color: #fff;
                 }
             }
         }
