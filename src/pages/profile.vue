@@ -89,6 +89,30 @@ export default {
             return this.userId === this.$store.state.currentUser.userId;
         },
     },
+    watch: {
+        $route: {
+            immediate: true,
+            handler(to, from) {
+                if (to.path.includes('profile')) {
+                    console.log(to);
+                    this.isLoading = true;
+                    this.userId = parseInt(to.params.userId);
+                    getProfileData(this.userId).then(res => {
+                        console.log(res);
+                        this.isLoading = false;
+                        const { code, data } = res.data;
+                        if (code === 1) {
+                            this.user = data;
+                        } else {
+                            this.err = "获取数据失败";
+                        }
+                    }, reason => {
+                        this.err = reason;
+                    })
+                }
+            }
+        }
+    },
     methods: {
         setOpenUpdate(value) {
             this.isOpenUpdate = value;
@@ -107,21 +131,6 @@ export default {
                 this.user.isFollowed = false;
             })
         }
-    },
-    mounted() {
-        this.userId = parseInt(this.$route.params.userId);
-        getProfileData(this.userId).then(res => {
-            console.log(res);
-            this.isLoading = false;
-            const { code, data } = res.data;
-            if (code === 1) {
-                this.user = data;
-            } else {
-                this.err = "获取数据失败";
-            }
-        }, reason => {
-            this.err = reason;
-        })
     }
 }
 

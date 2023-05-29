@@ -8,15 +8,18 @@
             <BulbOutlined v-else @click="toggle" />
             <AppstoreOutlined />
             <div class="search">
-                <SearchOutlined />
-                <input type="text" placeholder='搜索....' />
+                <SearchOutlined class="search-btn" @click="searchHandler" />
+                <input type="text" placeholder='搜索....' v-model="searchText" />
             </div>
         </div>
         <div class="right">
             <div class="notice">
                 <mail-outlined @click="openDrawerHandler" />
+                <div class="count" v-if="notReadCount !== 0">
+                    {{ notReadCount > 99 ? 99 : notReadCount }}
+                </div>
                 <a-drawer v-model:visible="isShowDrawer" :width="420">
-                    <Notice v-if="isShowDrawer" />
+                    <Notice v-if="isShowDrawer" @read="readHandler" />
                 </a-drawer>
             </div>
             <a-dropdown>
@@ -33,19 +36,7 @@
                             </a>
                         </a-menu-item>
                         <a-menu-item>
-                            <a href="javascript:;">
-                                <BellOutlined />
-                                聊天记录
-                            </a>
-                        </a-menu-item>
-                        <a-menu-item>
-                            <a href="javascript:;">
-                                <MailOutlined />
-                                消息通知
-                            </a>
-                        </a-menu-item>
-                        <a-menu-item>
-                            <a href="javascript:;">
+                            <a @click="logoutHandler">
                                 <export-outlined />&nbsp;账号登出
                             </a>
                         </a-menu-item>
@@ -69,7 +60,7 @@ import {
     ExportOutlined,
 } from '@ant-design/icons-vue';
 import Notice from './notice.vue';
-import { getAllCount } from '../request/request';
+import { getAllCount, logout } from '../request/request';
 
 import { mapState } from 'vuex';
 
@@ -77,13 +68,15 @@ export default {
     name: 'navBar',
     data() {
         return {
-            isShowDrawer: false
+            isShowDrawer: false,
+            searchText: ""
         }
     },
     computed: {
         ...mapState({
             currentUser: state => state.currentUser,
-            darkMode: state => state.darkMode
+            darkMode: state => state.darkMode,
+            notReadCount: state => state.notReadCount
         })
     },
     components: {
@@ -107,11 +100,24 @@ export default {
         },
         openDrawerHandler() {
             this.isShowDrawer = true;
+        },
+        logoutHandler() {
+            logout().then(() => {
+                this.$store.commit('logout');
+                this.$router.replace('/login');
+            })
+        },
+        readHandler() {
+            this.isShowDrawer = false;
+        },
+        searchHandler() {
+            this.$router.push(`/search/${this.searchText}`);
         }
     },
     mounted() {
         getAllCount().then(res => {
-            console.log(res);
+            let count = res.data.data;
+            this.$store.commit('setNotReadCount', count);
         })
     }
 }
@@ -154,6 +160,10 @@ export default {
                 border: 1px solid themed("border");
                 border-radius: 5px;
                 padding: 5px;
+
+                .search-btn {
+                    cursor: pointer;
+                }
 
                 input {
                     border: none;
@@ -206,6 +216,21 @@ export default {
                 font-size: 20px;
                 cursor: pointer;
                 margin-right: 20px;
+                position: relative;
+
+                .count {
+                    position: absolute;
+                    right: -10px;
+                    top: 0px;
+                    width: 18px;
+                    height: 18px;
+                    line-height: 18px;
+                    border-radius: 50%;
+                    background-color: red;
+                    color: #fff;
+                    text-align: center;
+                    font-size: 12px;
+                }
             }
         }
     }

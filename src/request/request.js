@@ -16,11 +16,7 @@ export function login(inputs) {
 }
 
 export function logout() {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve("success");
-        });
-    });
+    return instance.post("/api/auth/logout");
 }
 
 export function online() {
@@ -33,6 +29,14 @@ export function offline() {
 
 export function upload(formData) {
     return instance.post('/api/applet/upload', formData);
+}
+
+export function search(query) {
+    return instance.get('/api/search', {
+        params: {
+            query
+        }
+    })
 }
 
 export function getRecommendUsers() {

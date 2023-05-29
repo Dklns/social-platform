@@ -14,6 +14,7 @@ import Friends from './pages/friends.vue';
 import Chat from './pages/chat.vue';
 import BrowsingHistory from './pages/BrowsingHistory.vue';
 import shop from './pages/shop.vue'
+import SearchResult from './pages/SearchResult.vue'
 
 const routes = [
     {
@@ -43,6 +44,10 @@ const routes = [
             {
                 path: '/history',
                 component: BrowsingHistory
+            },
+            {
+                path: "/search/:query",
+                component: SearchResult
             }
         ]
     },

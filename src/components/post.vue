@@ -119,16 +119,16 @@ export default {
         ShareAltOutlined
     },
     mounted() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    // 当元素进入视口范围时触发
-                    addHistory(this.post.postId);
-                }
-            });
-        });
+        // const observer = new IntersectionObserver((entries) => {
+        //     entries.forEach((entry) => {
+        //         if (entry.isIntersecting) {
+        //             // 当元素进入视口范围时触发
+        //             addHistory(this.post.postId);
+        //         }
+        //     });
+        // });
 
-        observer.observe(this.$refs.post);
+        // observer.observe(this.$refs.post);
     },
 }
 </script>

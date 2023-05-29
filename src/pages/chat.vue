@@ -24,8 +24,8 @@
                             <p>{{ item.hint }}</p>
                         </div>
                         <div class="bottom">
-                            <div class="img-container">
-                                <img :src="profilePic">
+                            <div class="img-container" @click="() => gotoProfileHandler(item.userId)">
+                                <img :src="item.userId === userId ? profilePic : currentUser.profilePic">
                             </div>
                             <p class="content">
                                 {{ item.content }}
@@ -66,6 +66,8 @@ import {
     EllipsisOutlined, DeleteOutlined
 } from '@ant-design/icons-vue';
 
+import { mapState } from 'vuex';
+
 export default {
     data() {
         return {
@@ -77,6 +79,9 @@ export default {
             timer: null,
             isToBottom: false
         }
+    },
+    computed: {
+        ...mapState(['currentUser'])
     },
     components: {
         AudioOutlined,
@@ -92,6 +97,7 @@ export default {
         $route: {
             immediate: true,
             handler(to, from) {
+                clearInterval(this.timer);
                 if (to.path.includes('chat')) {
                     this.getList(this.$route.params.userId);
                 }
@@ -102,10 +108,7 @@ export default {
         getList(userId) {
             getChat(userId).then(res => {
                 this.list = res.data.data;
-                console.log(res.data.data);
                 this.userId = parseInt(userId);
-                clearInterval(this.timer);
-                console.log(this.timer);
 
                 // 计算是否显示时间提示
                 let lastTime = "";
@@ -136,6 +139,7 @@ export default {
                 // 开始不断请求
                 this.timer = setInterval(() => {
                     this.redo();
+                    console.log(this.userId);
                 }, 1000);
             })
         },
@@ -179,10 +183,10 @@ export default {
             deleteAll(this.userId).then(() => {
                 this.redo();
             })
+        },
+        gotoProfileHandler(userId) {
+            this.$router.push(`/profile/${userId}`)
         }
-    },
-    onUnmounted() {
-        clearInterval(this.timer);
     }
 }
 </script>
@@ -243,12 +247,13 @@ export default {
                             .img-container {
                                 width: 50px;
                                 height: 50px;
+                                cursor: pointer;
 
                                 img {
                                     width: 100%;
                                     height: 100%;
                                     border-radius: 50%;
-                                    object-fit: contain;
+                                    object-fit: cover;
                                 }
                             }
 
