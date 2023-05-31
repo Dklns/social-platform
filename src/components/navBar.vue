@@ -9,10 +9,13 @@
             <AppstoreOutlined />
             <div class="search">
                 <SearchOutlined class="search-btn" @click="searchHandler" />
-                <input type="text" placeholder='搜索....' v-model="searchText" />
+                <input type="text" placeholder='搜索....' v-model="searchText" @keydown="keydownHandler" />
             </div>
         </div>
         <div class="right">
+            <div class="star">
+                <star-outlined @click="gotoStarHandler" />
+            </div>
             <div class="notice">
                 <mail-outlined @click="openDrawerHandler" />
                 <div class="count" v-if="notReadCount !== 0">
@@ -58,6 +61,7 @@ import {
     MailOutlined,
     BellOutlined,
     ExportOutlined,
+    StarOutlined
 } from '@ant-design/icons-vue';
 import Notice from './notice.vue';
 import { getAllCount, logout } from '../request/request';
@@ -89,7 +93,8 @@ export default {
         MailOutlined,
         BellOutlined,
         ExportOutlined,
-        Notice
+        Notice,
+        StarOutlined
     },
     methods: {
         toggle() {
@@ -112,6 +117,14 @@ export default {
         },
         searchHandler() {
             this.$router.push(`/search/${this.searchText}`);
+        },
+        keydownHandler(e) {
+            if (e.keyCode === 13) {
+                this.searchHandler();
+            }
+        },
+        gotoStarHandler() {
+            this.$router.push(`/star`);
         }
     },
     mounted() {
@@ -210,6 +223,13 @@ export default {
                     border-radius: 50%;
                     object-fit: cover;
                 }
+            }
+
+            .star {
+                font-size: 20px;
+                cursor: pointer;
+                margin-right: 20px;
+                position: relative;
             }
 
             .notice {

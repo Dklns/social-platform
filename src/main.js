@@ -15,6 +15,8 @@ import Chat from './pages/chat.vue';
 import BrowsingHistory from './pages/BrowsingHistory.vue';
 import shop from './pages/shop.vue'
 import SearchResult from './pages/SearchResult.vue'
+import Star from './pages/Star.vue';
+import Rank from './pages/Rank.vue';
 
 const routes = [
     {
@@ -48,6 +50,14 @@ const routes = [
             {
                 path: "/search/:query",
                 component: SearchResult
+            },
+            {
+                path: "/star",
+                component: Star
+            },
+            {
+                path: "/rank",
+                component: Rank
             }
         ]
     },

@@ -6,22 +6,28 @@
                     <img :src="currentUser.profilePic" />
                     <span>{{ currentUser.nickname }}</span>
                 </div>
-                <div className=" item">
+                <div class=" item">
                     <router-link :to="`/friends/${currentUser.userId}`">
                         <img :src="Friends" />
                         <span>我的好友</span>
                     </router-link>
                 </div>
-                <div className="item">
+                <div class="item">
                     <router-link :to="'/shop'">
                         <img :src="Market" />
                         <span>积分商城</span>
                     </router-link>
                 </div>
-                <div className="item">
+                <div class="item">
                     <router-link :to="'/history'">
                         <img :src="Watch" />
                         <span>浏览记录</span>
+                    </router-link>
+                </div>
+                <div class="item">
+                    <router-link :to="'/rank'">
+                        <img :src="Rank" />
+                        <span>排行榜</span>
                     </router-link>
                 </div>
             </div>
@@ -32,18 +38,9 @@
 
 <script>
 import Friends from '../assets/imgs/泡泡.png';
-import Groups from '../assets/imgs/蛋糕.png';
-import Gallery from '../assets/imgs/相机.png';
 import Watch from '../assets/imgs/眼睛.png';
-import Memories from '../assets/imgs/闹钟.png';
 import Market from '../assets/imgs/购物.png';
-import Events from '../assets/imgs/风筝.png';
-import Gaming from '../assets/imgs/纸飞机.png';
-import Video from '../assets/imgs/礼花.png';
-import Message from '../assets/imgs/对话框.png';
-import Fundraiser from '../assets/imgs/花.png';
-import Tutorials from '../assets/imgs/彩铅.png';
-import Courses from '../assets/imgs/煎蛋.png';
+import Rank from '../assets/imgs/花.png';
 
 import { mapState } from 'vuex';
 
@@ -52,18 +49,9 @@ export default {
     data() {
         return {
             Friends,
-            Groups,
-            Gallery,
             Watch,
-            Memories,
             Market,
-            Events,
-            Gaming,
-            Video,
-            Message,
-            Fundraiser,
-            Tutorials,
-            Courses,
+            Rank
         }
     },
     computed: {

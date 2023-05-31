@@ -29,7 +29,7 @@ import { mapState } from 'vuex';
 import store from '../store/store';
 
 export default {
-    props: ["userId", "searchResult"],
+    props: ["userId", "resources"],
     data() {
         return {
             isLoading: true,
@@ -48,9 +48,9 @@ export default {
         })
     },
     mounted() {
-        if (this.searchResult) {
+        if (this.resources) {
             console.log('posts search');
-            store.commit("setHomePosts", this.searchResult);
+            store.commit("setHomePosts", this.resources);
             this.isLoading = false;
         } else if (this.userId) {
             getPostByUserId(this.userId).then(res => {
