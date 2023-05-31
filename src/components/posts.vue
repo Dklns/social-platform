@@ -62,6 +62,7 @@ export default {
             })
         } else {
             getAllPost().then(res => {
+                console.log(res);
                 store.commit("setHomePosts", res.data.data);
                 this.isLoading = false;
             }, reason => {

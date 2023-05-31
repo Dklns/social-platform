@@ -62,3 +62,11 @@ export function getNotifications() {
 export function getAllCount() {
     return instance.get('/api/chat/count');
 }
+
+export function getUserRank() {
+    return instance.get('/api/statistics/hotUser');
+}
+
+export function getPostRank() {
+    return instance.get('/api/statistics/hotPost');
+}
