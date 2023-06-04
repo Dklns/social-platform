@@ -83,3 +83,23 @@ export function cancelLikeComment(commentId) {
 export function share(formData) {
     return instance.post('/api/post', formData)
 }
+
+export function getStars() {
+    return instance.get('/api/favorite');
+}
+
+export function star(postId) {
+    return instance.post(`/api/favorite?postId=${postId}`, {
+        params: {
+            postId
+        }
+    });
+}
+
+export function cancelStar(postId) {
+    return instance.delete(`/api/favorite?postId=${postId}`, {
+        params: {
+            postId
+        }
+    })
+}   

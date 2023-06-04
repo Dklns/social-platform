@@ -46,10 +46,11 @@
                         {{ commentNum }} 评论
                     </span>
                 </div>
-                <div className="item">
-                    <ShareAltOutlined />
+                <div className="item" @click="starHandler">
+                    <star-filled v-if="post.isStaring" :style="{ color: `red` }" />
+                    <star-outlined v-else />
                     <span>
-                        分享
+                        收藏
                     </span>
                 </div>
             </div>
@@ -61,9 +62,13 @@
 
 <script>
 import Comment from './comment.vue';
-import { EllipsisOutlined, HeartOutlined, ShareAltOutlined } from '@ant-design/icons-vue';
+import {
+    EllipsisOutlined, HeartOutlined, ShareAltOutlined,
+    StarOutlined, StarFilled
+} from '@ant-design/icons-vue';
 import { like, cancelLike, deletePost, getAllPost, getPostByUserId } from '../request/post';
 import { addHistory } from '../request/history';
+import { star, cancelStar } from '../request/post';
 
 import { mapState } from 'vuex';
 
@@ -111,12 +116,25 @@ export default {
         deleteCommentHandler() {
             this.commentNum--;
         },
+        starHandler() {
+            if (this.post.isStaring) {
+                this.post.isStaring = false;
+                cancelStar(this.post.postId);
+            } else {
+                this.post.isStaring = true;
+                star(this.post.postId).then(res => {
+                    console.log(res);
+                });
+            }
+        }
     },
     components: {
         Comment,
         EllipsisOutlined,
         HeartOutlined,
-        ShareAltOutlined
+        ShareAltOutlined,
+        StarOutlined,
+        StarFilled
     },
     mounted() {
         const observer = new IntersectionObserver((entries) => {

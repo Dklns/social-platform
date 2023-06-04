@@ -21,7 +21,7 @@
         </div>
         <div class="content" v-else>
             <div class="posts" v-if="selectedKeys[0] === `post`">
-                <Posts :searchResult="posts" />
+                <Posts :resources="posts" />
             </div>
             <div class="users" v-else>
                 <div class="item" v-for="user in users" :key="user.userId">
@@ -93,6 +93,7 @@ export default {
     @include themify($themes) {
         background-color: themed('bgSoft');
         height: 100%;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -104,6 +105,8 @@ export default {
         }
 
         .content {
+            width: 100%;
+
             .users {
                 .item {
                     width: 600px;
