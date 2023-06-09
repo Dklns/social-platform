@@ -18,7 +18,7 @@
             </div>
             <div class="notice">
                 <mail-outlined @click="openDrawerHandler" />
-                <div class="count" v-if="notReadCount !== 0">
+                <div class="count" v-if="notReadCount > 0">
                     {{ notReadCount > 99 ? 99 : notReadCount }}
                 </div>
                 <a-drawer v-model:visible="isShowDrawer" :width="420">
