@@ -100,7 +100,6 @@ export default {
     },
     mounted() {
         getRecommendUsers().then(res => {
-            console.log(res);
             this.recommendUsers = res.data.data;
             this.recommendIsLoading = false;
         });

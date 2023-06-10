@@ -22,7 +22,7 @@
         </div>
         <div class="list" v-else>
             <div class="p" v-if="selectedKeys[0] === `post`">
-                <Posts :resources="postList" />
+                <RankPost v-for="post in postList" :key="post.id" :post="post" />
             </div>
             <div class="users" v-else>
                 <div class="item" v-for="user in userList" :key="user.userId">
@@ -69,6 +69,7 @@ import { SmileOutlined, UserOutlined } from '@ant-design/icons-vue';
 import { getUserRank, getPostRank } from '../request/request';
 import { follow, cancelFollowing } from '../request/friend';
 import Posts from '../components/posts.vue';
+import RankPost from '../components/RankPost.vue';
 
 import { mapState } from 'vuex';
 
@@ -111,16 +112,20 @@ export default {
     components: {
         SmileOutlined,
         UserOutlined,
-        Posts
+        Posts,
+        RankPost
     },
     mounted() {
         getPostRank().then(res => {
+            console.log(res);
             this.postList = res.data.data;
+
+            this.postList.forEach(item => {
+                item.hotness = item.hotness.toFixed(2);
+            })
 
             return getUserRank()
         }).then(res => {
-            console.log(res);
-
             this.userList = res.data.data;
 
             this.userList.forEach(item => {
@@ -158,7 +163,6 @@ export default {
 
         .list {
 
-            .p,
             .users {
                 display: flex;
                 width: 700px;
@@ -166,7 +170,11 @@ export default {
             }
 
             .p {
+                width: 700px;
+                display: flex;
+                flex-direction: column;
                 padding: 20px 70px;
+                gap: 50px;
             }
 
             .users {
@@ -205,6 +213,7 @@ export default {
                                 color: #ff8200;
                                 height: 40px;
                             }
+
 
                             .info {
                                 display: flex;
