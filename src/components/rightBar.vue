@@ -6,12 +6,15 @@
             </div>
             <div className="item" v-else>
                 <span class="gray">向你推荐</span>
-                <div className="user" v-for="user in recommendUsers" :key="user.userId">
+                <div className="user recommend" v-for="user in recommendUsers" :key="user.userId">
                     <div className="user-info">
                         <img :src="user.profilePic" />
                         <span class="name" @click="() => gotoProfileHandler(user.userId)">{{ user.nickname }}</span>
                         <span class="location">{{ user.location }}</span>
                         <span class="language">{{ user.language }}</span>
+                        <p class="reason">
+                            {{ user.reason }}
+                        </p>
                     </div>
                     <div className="btn">
                         <a-button v-if="user.isFollowed" @click="() => cancelFollowHandler(user)">
@@ -162,13 +165,25 @@ export default {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    margin: 20px 0;
+                    margin: 10px 0;
+
+                    &.recommend {
+                        margin-top: 40px;
+                    }
 
                     .user-info {
                         display: flex;
                         align-items: center;
                         gap: 20px;
                         position: relative;
+
+                        .reason {
+                            position: absolute;
+                            top: -20px;
+                            left: 30px;
+                            color: #999;
+                            font-size: 12px;
+                        }
 
                         img {
                             height: 40px;
@@ -225,6 +240,7 @@ export default {
 
             .btn {
                 display: flex;
+                flex-direction: column;
                 align-items: center;
                 gap: 10px;
                 color: #fff;

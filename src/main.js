@@ -17,6 +17,7 @@ import shop from './pages/shop.vue'
 import SearchResult from './pages/SearchResult.vue'
 import Star from './pages/Star.vue';
 import Rank from './pages/Rank.vue';
+import Post from './pages/Post.vue';
 
 const routes = [
     {
@@ -26,6 +27,10 @@ const routes = [
             {
                 path: '',
                 component: Home
+            },
+            {
+                path: '/post/:postId',
+                component: Post
             },
             {
                 path: '/profile/:userId',
