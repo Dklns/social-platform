@@ -1,11 +1,20 @@
 <script setup>
 import { FireOutlined } from '@ant-design/icons-vue';
 import { createFromIconfontCN } from '@ant-design/icons-vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 const IconFont = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/c/font_4115412_gnwzgoky8mn.js',
 });
 
 const { post } = defineProps(['post']);
+
+const gotoSinglePost = () => {
+    router.push(`/post/${post.postId}`).then(() => {
+        window.scrollTo(0, 0);
+    })
+}
 
 </script>
 
@@ -45,7 +54,7 @@ const { post } = defineProps(['post']);
             </div>
         </div>
         <div class="content">
-            <p>
+            <p @click="gotoSinglePost">
                 {{ post.content }}
             </p>
         </div>
@@ -126,6 +135,11 @@ const { post } = defineProps(['post']);
 
     .content {
         margin-top: 20px;
+
+        p {
+            line-height: 2em;
+            cursor: pointer;
+        }
     }
 
 }

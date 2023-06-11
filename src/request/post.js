@@ -102,4 +102,12 @@ export function cancelStar(postId) {
             postId
         }
     })
-}   
+}
+
+export function getSinglePost(postId) {
+    return instance.get(`/api/post/getDetail`, {
+        params: {
+            postId
+        }
+    });
+}

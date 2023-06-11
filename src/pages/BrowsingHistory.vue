@@ -27,7 +27,7 @@
                             <more-outlined />
                             <template #overlay>
                                 <a-menu>
-                                    <a-menu-item>
+                                    <a-menu-item @click="() => deleteHandler(item.id)">
                                         删除记录
                                     </a-menu-item>
                                 </a-menu>
@@ -81,6 +81,7 @@ export default {
     },
     mounted() {
         getHistory().then(res => {
+            console.log(res);
             this.list = res.data.data;
             this.isLoading = false;
         })
