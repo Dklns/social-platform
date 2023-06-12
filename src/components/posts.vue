@@ -49,7 +49,6 @@ export default {
     },
     mounted() {
         if (this.resources) {
-            console.log('posts search');
             store.commit("setHomePosts", this.resources);
             this.isLoading = false;
         } else if (this.userId) {
@@ -62,7 +61,6 @@ export default {
             })
         } else {
             getAllPost().then(res => {
-                console.log(res);
                 store.commit("setHomePosts", res.data.data);
                 this.isLoading = false;
             }, reason => {

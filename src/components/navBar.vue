@@ -13,6 +13,11 @@
             </div>
         </div>
         <div class="right">
+            <div class="statistics">
+                <router-link to="/statistics">
+                    <BarChartOutlined />
+                </router-link>
+            </div>
             <div class="star">
                 <star-outlined @click="gotoStarHandler" />
             </div>
@@ -61,7 +66,8 @@ import {
     MailOutlined,
     BellOutlined,
     ExportOutlined,
-    StarOutlined
+    StarOutlined,
+    BarChartOutlined
 } from '@ant-design/icons-vue';
 import Notice from './notice.vue';
 import { getAllCount, logout } from '../request/request';
@@ -94,7 +100,8 @@ export default {
         BellOutlined,
         ExportOutlined,
         Notice,
-        StarOutlined
+        StarOutlined,
+        BarChartOutlined
     },
     methods: {
         toggle() {
@@ -152,6 +159,10 @@ export default {
         border-bottom: 1px solid themed("border");
         background-color: themed("bg");
         color: themed('textColor');
+
+        a {
+            color: inherit;
+        }
 
 
         .left {
@@ -223,6 +234,13 @@ export default {
                     border-radius: 50%;
                     object-fit: cover;
                 }
+            }
+
+            .statistics {
+                font-size: 20px;
+                cursor: pointer;
+                margin-right: 20px;
+                position: relative;
             }
 
             .star {

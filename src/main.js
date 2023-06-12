@@ -18,6 +18,7 @@ import SearchResult from './pages/SearchResult.vue'
 import Star from './pages/Star.vue';
 import Rank from './pages/Rank.vue';
 import Post from './pages/Post.vue';
+import Statistics from './pages/Statistics.vue';
 
 const routes = [
     {
@@ -68,7 +69,7 @@ const routes = [
     },
     { name: 'login', path: '/login/:username?', component: Login },
     { path: '/register', component: Register },
-
+    { path: '/statistics', component: Statistics }
 ]
 
 const router = createRouter({
