@@ -16,6 +16,10 @@
                 <form>
                     <input type="text" placeholder='用户名' name='username' v-model="inputs.username" />
                     <input type="email" placeholder='电子邮箱' name='email' v-model="inputs.email" />
+                    <input type="email" placeholder='验证码' name='email' v-model="inputs.code" />
+                    <a-button class="code" :disabled="!inputs.email || isGettingCode" @click="getCodeHandler">
+                        {{ isGettingCode ? `${loadingSeconds} 秒后重新获取` : "获取验证码" }}
+                    </a-button>
                     <input type="password" placeholder="密码" name='password' v-model="inputs.password" />
                     <input type="text" placeholder='昵称' name='nickname' v-model="inputs.nickname" />
                     <a-button type="primary" :loading="isLoading" @click="registerHandler">注册</a-button>
@@ -29,7 +33,8 @@
 </template>
 
 <script>
-import { register } from '../request/request'
+import { register, getCode } from '../request/request';
+
 export default {
     name: 'register',
     data() {
@@ -39,9 +44,12 @@ export default {
                 email: '',
                 password: '',
                 nickname: '',
+                code: "",
             },
             isLoading: false,
-            err: ''
+            isGettingCode: false,
+            err: '',
+            loadingSeconds: 0
         }
     },
     methods: {
@@ -49,33 +57,52 @@ export default {
             if (this.checkInputs() === "disqualification") return;
             this.isLoading = true;
             const res = await register(this.inputs);
+            console.log(res);
             const { code } = res.data;
             if (code === 1) {
                 this.isLoading = false;
                 this.$router.push(`/login/${this.inputs.username}`);
             } else {
-                console.log(res);
-                this.err = res;
+                this.err = res.data.msg;
             }
         },
         checkInputs() {
             const inputs = this.inputs;
             for (let key in inputs) {
                 if (inputs[key] === "") {
-                    this.err = "The form has blank space";
+                    this.err = "表单不能有空白";
                     return "disqualification";
                 }
             }
             const reg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             if (!reg.test(inputs.email)) {
-                this.err = "email format error";
+                this.err = "邮箱格式错误";
                 return "disqualification";
             }
 
             const len = inputs.password.length
             if (len < 6 || len > 20) {
-                this.err = "The password length should be between 6 and 20";
+                this.err = "密码长度应该在 6 到 20 之间";
                 return "disqualification";
+            }
+        },
+        async getCodeHandler() {
+            this.isGettingCode = true;
+            this.loadingSeconds = 60;
+            const t = setInterval(() => {
+                if (this.loadingSeconds-- <= 0) {
+                    this.isGettingCode = false;
+                    this.loadingSeconds = 0;
+                    clearInterval(t);
+                }
+            }, 1000);
+
+            try {
+                const res = await getCode();
+                console.log(res);
+
+            } catch (error) {
+                console.log(error);
             }
         }
     }
@@ -84,8 +111,6 @@ export default {
 
 <style lang="scss">
 .register {
-    // height: 100vh;
-    // background-color: rgb(193, 190, 255);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -114,7 +139,7 @@ export default {
     .card {
         display: flex;
         flex-direction: row-reverse;
-        width: 50%;
+        //width: 50%;
         min-height: 600px;
         background-color: #fff;
         border-radius: 10px;
@@ -166,11 +191,18 @@ export default {
                 display: flex;
                 flex-direction: column;
                 gap: 30px;
+                position: relative;
 
                 input {
                     border: none;
                     border-bottom: 1px solid lightgray;
                     padding: 20px 10px;
+                }
+
+                .code {
+                    position: absolute;
+                    right: 50px;
+                    top: 200px
                 }
             }
         }

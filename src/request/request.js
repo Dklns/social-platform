@@ -5,6 +5,10 @@ export function register(inputs) {
     return axios.post('http://localhost:8080/smp/api/auth/register', { ...inputs });
 }
 
+export function getCode() {
+    return axios.get('http://localhost:8080/smp/api/applet/mail/send');
+}
+
 export function login(inputs) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
