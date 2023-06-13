@@ -123,6 +123,7 @@ export default {
             this.isShowDrawer = false;
         },
         searchHandler() {
+            if (!this.searchText) return;
             this.$router.push(`/search/${this.searchText}`);
         },
         keydownHandler(e) {

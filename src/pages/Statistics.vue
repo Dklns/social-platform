@@ -6,27 +6,34 @@ import * as echarts from 'echarts';
 const mapChartContainer = ref(null);
 const barChartContainer = ref(null);
 const state = reactive({
-    isLoading: true
+    isLoading: true,
 })
 
 onMounted(async () => {
-    let res;
-    // try {
-    //     res = await getUserInfo();
-    //     console.log('user', res);
-    //     res = await getPostInfo();
-    //     console.log('post', res);
-    // } catch (error) {
-    //     console.log(error);
-    // } finally {
-    //     state.isLoading = false;
-    // }
+    let res,
+        mapData,
+        barData,
+        mapJSON;
+    try {
+        res = await getUserInfo();
+        console.log('user', res);
+
+        mapData = res.data.data;
+
+        res = await getPostInfo();
+        console.log('post', res);
+
+        barData = res.data.data;
+
+
+    } catch (error) {
+        console.log(error);
+    } finally {
+        state.isLoading = false;
+    }
 
     res = await getMap();
-    const mapJSON = JSON.stringify(res.data);
-
-    res = await getMapData();
-    const data = res;
+    mapJSON = JSON.stringify(res.data);
 
     echarts.registerMap('china', mapJSON);
     const mapChart = echarts.init(mapChartContainer.value);
@@ -75,7 +82,7 @@ onMounted(async () => {
         series: [
             { // 散点图
                 type: "scatter",
-                data,
+                data: mapData,
                 coordinateSystem: 'geo'
             }
         ]
@@ -120,7 +127,7 @@ onMounted(async () => {
         series: [
             {
                 type: 'bar',
-                data: [190, 230, 240, 195, 190, 300, 280],
+                data: barData,
                 itemStyle: {
                     normal: {
                         color: '#e9bd39'
@@ -138,7 +145,10 @@ onMounted(async () => {
         <h1>
             数据统计量
         </h1>
-        <div class="content">
+        <div class="content" v-if="state.isLoading">
+            <a-spin />
+        </div>
+        <div class="content" v-else>
             <div ref="mapChartContainer" class="map-chart">
             </div>
             <div ref="barChartContainer" class="bar-chart">
@@ -155,6 +165,7 @@ onMounted(async () => {
     justify-content: center;
     background-color: #3d8fc6;
     padding-top: 30px;
+    min-height: 100vh;
 
     h1 {
         text-align: center;
