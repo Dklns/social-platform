@@ -9,11 +9,18 @@
             <div className="profile-container">
                 <div className="profile-user-info">
                     <div className="left">
-                        <QqOutlined class="icon-link" />
-                        <WechatFilled class="icon-link" />
-                        <FacebookFilled class="icon-link" />
-                        <InstagramFilled class="icon-link" />
-                        <WeiboCircleFilled class="icon-link" />
+                        <a-tooltip :title="user.qq">
+                            <QqOutlined class="icon-link" />
+                        </a-tooltip>
+                        <a-tooltip :title="user.twitter">
+                            <TwitterOutlined class="icon-link" />
+                        </a-tooltip>
+                        <a-tooltip :title="user.facebook">
+                            <FacebookFilled class="icon-link" />
+                        </a-tooltip>
+                        <a-tooltip :title="user.weibo">
+                            <WeiboCircleFilled class="icon-link" />
+                        </a-tooltip>
                     </div>
                     <div className="center">
                         <span>{{ user.nickname }}</span>
@@ -40,8 +47,8 @@
                 <Posts :userId="user.userId" />
             </div>
         </div>
-        <a-modal v-model:visible="isOpenUpdate" :style="{ width: `800px` }" :footer="null">
-            <update :user="{ ...user }" :setOpenUpdate="setOpenUpdate" :updateUser="updateUser" />
+        <a-modal v-model:visible="isOpenUpdate" :style="{ width: `1000px` }" :footer="null">
+            <update v-if="isOpenUpdate" :user="{ ...user }" :setOpenUpdate="setOpenUpdate" :updateUser="updateUser" />
         </a-modal>
     </div>
 </template>
@@ -54,7 +61,8 @@ import {
     FacebookFilled,
     InstagramFilled,
     WeiboCircleFilled,
-    MessageOutlined
+    MessageOutlined,
+    TwitterOutlined
 } from '@ant-design/icons-vue';
 
 import loadingMark from '../components/loadingMark.vue';
@@ -85,7 +93,8 @@ export default {
         WeiboCircleFilled,
         MessageOutlined,
         loadingMark,
-        Update
+        Update,
+        TwitterOutlined
     },
     computed: {
         isShowUpdateForm() {
