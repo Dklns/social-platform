@@ -80,8 +80,10 @@ const router = createRouter({
 router.beforeEach((to, from) => {
     const currentUser = store.state.currentUser;
 
+    console.log(to);
+
     // 如果未登录则重定向到登录
-    if (currentUser === null && (to.name !== 'login' && to.name !== 'register')) {
+    if (currentUser === null && (to.path !== '/login' && to.path !== '/register')) {
         console.log('test');
         return { name: 'login' }
     }
