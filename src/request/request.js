@@ -5,8 +5,16 @@ export function register(inputs) {
     return axios.post('http://localhost:8080/smp/api/auth/register', { ...inputs });
 }
 
-export function getCode() {
-    return axios.get('http://localhost:8080/smp/api/applet/mail/send');
+export function getCode(email) {
+    return axios.post('http://localhost:8080/smp/api/applet/mail/send', {
+        address: email
+    });
+}
+
+export function validateCode(code) {
+    return axios.post('http://localhost:8080/smp/api/applet/mail/verify', {
+        code
+    })
 }
 
 export function login(inputs) {

@@ -22,10 +22,10 @@
                     </a-button>
                     <input type="password" placeholder="密码" name='password' v-model="inputs.password" />
                     <input type="text" placeholder='昵称' name='nickname' v-model="inputs.nickname" />
-                    <a-button type="primary" :loading="isLoading" @click="registerHandler">注册</a-button>
                     <p v-if="err" class="err">
                         {{ err }}
                     </p>
+                    <a-button type="primary" :loading="isLoading" @click="registerHandler">注册</a-button>
                 </form>
             </div>
         </div>
@@ -33,17 +33,17 @@
 </template>
 
 <script>
-import { register, getCode } from '../request/request';
+import { register, getCode, validateCode } from '../request/request';
 
 export default {
     name: 'register',
     data() {
         return {
             inputs: {
-                username: '',
-                email: '',
-                password: '',
-                nickname: '',
+                username: 'klns',
+                email: 'd.klns.245@gmail.com',
+                password: '123456',
+                nickname: 'klns',
                 code: "",
             },
             isLoading: false,
@@ -54,16 +54,35 @@ export default {
     },
     methods: {
         async registerHandler() {
+            this.err = "";
             if (this.checkInputs() === "disqualification") return;
+
             this.isLoading = true;
-            const res = await register(this.inputs);
-            console.log(res);
-            const { code } = res.data;
-            if (code === 1) {
+            let res;
+
+            try {
+                res = await validateCode(this.inputs.code);
+                console.log('code', res);
+
+                if (res.data.code !== 1) {
+                    this.err = res.data.msg;
+                    return;
+                }
+
+                res = await register(this.inputs);
+                console.log(res);
+
+                const { code } = res.data;
+                if (code === 1) {
+                    this.isLoading = false;
+                    this.$router.push(`/login/${this.inputs.username}`);
+                } else {
+                    this.err = res.data.msg;
+                }
+            } catch (error) {
+                console.log(error);
+            } finally {
                 this.isLoading = false;
-                this.$router.push(`/login/${this.inputs.username}`);
-            } else {
-                this.err = res.data.msg;
             }
         },
         checkInputs() {
@@ -98,7 +117,7 @@ export default {
             }, 1000);
 
             try {
-                const res = await getCode();
+                const res = await getCode(this.inputs.email);
                 console.log(res);
 
             } catch (error) {
