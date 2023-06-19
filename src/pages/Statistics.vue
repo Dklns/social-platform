@@ -67,7 +67,7 @@ onMounted(async () => {
         visualMap: {
             type: "continuous",
             min: 1,
-            max: 100,
+            max: 5,
             left: '25%',
             bottom: '20%',
             text: ["用户数量"],

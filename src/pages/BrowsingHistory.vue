@@ -19,7 +19,7 @@
                     <p>
                         {{ item.nickname }}
                     </p>
-                    <p class="content" @click="() => searchHandler(item.content)">
+                    <p class="content" @click="() => gotoSingleHandler(item.postId)">
                         {{ item.content }}
                     </p>
                     <div class="more">
@@ -75,8 +75,8 @@ export default {
                 })
             })
         },
-        searchHandler(query) {
-            this.$router.push(`/search/${query}`);
+        gotoSingleHandler(query) {
+            this.$router.push(`/post/${query}`);
         }
     },
     mounted() {

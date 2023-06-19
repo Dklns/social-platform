@@ -38,7 +38,7 @@
                 </a-row>
                 <a-row :gutter="24">
                     <a-col :span="8">
-                        <a-form-item label="城市">
+                        <a-form-item label="省份">
                             <a-input v-model:value="formState.userLocation" />
                         </a-form-item>
                     </a-col>

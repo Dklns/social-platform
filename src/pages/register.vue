@@ -16,7 +16,7 @@
                 <form>
                     <input type="text" placeholder='用户名' name='username' v-model="inputs.username" />
                     <input type="email" placeholder='电子邮箱' name='email' v-model="inputs.email" />
-                    <input type="email" placeholder='验证码' name='email' v-model="inputs.code" />
+                    <input type="text" placeholder='验证码' name='email' v-model="inputs.code" />
                     <a-button class="code" :disabled="!inputs.email || isGettingCode" @click="getCodeHandler">
                         {{ isGettingCode ? `${loadingSeconds} 秒后重新获取` : "获取验证码" }}
                     </a-button>
@@ -40,10 +40,10 @@ export default {
     data() {
         return {
             inputs: {
-                username: 'klns',
-                email: 'd.klns.245@gmail.com',
-                password: '123456',
-                nickname: 'klns',
+                username: '',
+                email: '',
+                password: '',
+                nickname: '',
                 code: "",
             },
             isLoading: false,
